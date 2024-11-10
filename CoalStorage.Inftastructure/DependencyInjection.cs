@@ -18,7 +18,9 @@ public static class DependencyInjection
         services.AddOpenApiDocument(document => document.DocumentName = "a");
         services.AddSwaggerDocument(document => document.DocumentName = "b");
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+        services.AddScoped<IStorageRepository, StorageRepository>();
         services.AddScoped<AppDbContextInitialiser>();
+
         return services;
     }
 }

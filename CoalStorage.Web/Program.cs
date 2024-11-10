@@ -1,15 +1,14 @@
 using CoalStorage.Inftastructure;
 using CoalStorage.Inftastructure.Data;
+using CoalStorage.Web.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
@@ -34,9 +33,7 @@ app.MapControllers();
 
 app.MapRazorPages();
 
-app.AddRoutes();
-
-app.Map("/", () => Results.Redirect("/swagger"));
+app.ConfigureStorageEndpoints();
 app.Run();
 
 public partial class Program { }
