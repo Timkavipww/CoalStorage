@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace CoalStorage.Inftastructure.Data;
+namespace CoalStorage.Infrastructure.Data;
 
 public static class InitialiserExtensions
 {

@@ -2,6 +2,7 @@
 
 public abstract class BaseAuditableEntity : BaseEntity
 {
+#nullable enable
     public DateTimeOffset Created { get; set; }
 
     public string? CreatedBy { get; set; }

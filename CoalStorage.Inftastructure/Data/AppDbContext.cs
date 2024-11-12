@@ -1,4 +1,4 @@
-﻿namespace CoalStorage.Inftastructure.Data;
+﻿namespace CoalStorage.Infrastructure.Data;
 
 public class AppDbContext : DbContext
 {
