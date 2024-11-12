@@ -1,7 +1,7 @@
 ﻿using CoalStorage.Core.Interfaces;
-using CoalStorage.Inftastructure.Data;
+using CoalStorage.Infrastructure.Data;
 
-namespace CoalStorage.Inftastructure.Repositories
+namespace CoalStorage.Infrastructure.Repositories
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {

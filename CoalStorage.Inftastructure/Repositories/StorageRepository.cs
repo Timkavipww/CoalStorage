@@ -1,14 +1,14 @@
 ﻿using CoalStorage.Core.Common.Extensions;
 using CoalStorage.Core.Entities.DTO;
 using CoalStorage.Core.Interfaces;
-using CoalStorage.Inftastructure.Data;
+using CoalStorage.Infrastructure.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoalStorage.Inftastructure.Repositories
+namespace CoalStorage.Infrastructure.Repositories
 {
     public class StorageRepository : BaseRepository<MainStorage>, IStorageRepository
     {
