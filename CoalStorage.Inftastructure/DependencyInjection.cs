@@ -11,6 +11,7 @@ public static class DependencyInjection
         var issuer = configuration["JwtSettings:Issuer"];
         var audience = configuration["JwtSettings:Audience"];
         var connectionstring = configuration.GetConnectionString("DefaultConnection");
+
         Guard.Against.Null(connectionstring, message: "Connection string 'DefaultConnection' not found.");
 
         services.AddControllers();
@@ -54,6 +55,7 @@ public static class DependencyInjection
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         services.AddScoped<IStorageRepository, StorageRepository>();
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IAreaRepository, AreaRepository>();
         services.AddScoped<AppDbContextInitialiser>();
         services.AddScoped<AuthRepository>();
         services.AddEndpointsApiExplorer();

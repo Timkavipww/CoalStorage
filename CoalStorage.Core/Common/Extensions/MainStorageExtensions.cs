@@ -4,11 +4,11 @@ namespace CoalStorage.Core.Common.Extensions
 {
     public static class MainStorageExtensions
     {
-        public static MainStorage toEntity(this MainStorageDTO mainStorageDTO)
+        public static MainStorage toEntity(this MainStorageDTO mainStorageDTO) => new MainStorage
         {
-            if (mainStorageDTO == null) return null;
-
-            return new MainStorage { Id = mainStorageDTO.Id, Created = DateTimeOffset.UtcNow, CreatedBy = "Admin" };
-        }
+            Id = mainStorageDTO.Id,
+            Areas = mainStorageDTO.Areas.Select(areaDto => areaDto.toEntity()).ToList(),
+            Pickets = mainStorageDTO.Pickets.Select(picketsDto => picketsDto.toEntity()).ToList()
+        };
     }
 }

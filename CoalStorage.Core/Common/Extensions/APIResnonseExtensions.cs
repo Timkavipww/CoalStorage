@@ -24,13 +24,13 @@ public static class APIResponseExtensions
         response.StatusCode = HttpStatusCode.NotFound;
         return response;
     }
-    public static APIResponse dbException(this APIResponse response, DbException dbEx)
+    public static APIResponse DbException(this APIResponse response, DbException dbEx)
     {
         response.Result += "db error";
         response.ErrorMessages.Add($"{dbEx.Message}");
         return response;
     }
-    public static APIResponse fatalException(this APIResponse response, Exception ex)
+    public static APIResponse FatalException(this APIResponse response, Exception ex)
     {
         response.Result += "fatal error";
         response.ErrorMessages.Add($"{ex.Message}");

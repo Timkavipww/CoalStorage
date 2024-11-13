@@ -13,9 +13,15 @@ public class AppDbContext : DbContext
     public DbSet<StoragePicket> StoragePickets { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        ///adding a coal storage connection to other elements
+        // Настройка связи между Area и MainStorage
+        modelBuilder.Entity<Area>()
+            .HasOne(a => a.MainStorage)
+            .WithMany(ms => ms.Areas)
+            .HasForeignKey(a => a.MainStorageId);
+
+        // Остальные настройки связей
         modelBuilder.Entity<PicketArea>()
-             .HasKey(pa => new { pa.PicketID, pa.AreaID });
+            .HasKey(pa => new { pa.PicketID, pa.AreaID });
 
         modelBuilder.Entity<PicketArea>()
             .HasOne(pa => pa.Picket)
@@ -28,16 +34,17 @@ public class AppDbContext : DbContext
             .HasForeignKey(pa => pa.AreaID);
 
         modelBuilder.Entity<StoragePicket>()
-            .HasKey(wp => new { wp.StorageID, wp.PicketID });
+            .HasKey(sp => new { sp.StorageID, sp.PicketID });
 
         modelBuilder.Entity<StoragePicket>()
-            .HasOne(wp => wp.MainStorage)
-            .WithMany(w => w.StoragePickets)
-            .HasForeignKey(wp => wp.StorageID);
+            .HasOne(sp => sp.MainStorage)
+            .WithMany(ms => ms.StoragePickets)
+            .HasForeignKey(sp => sp.StorageID);
 
         modelBuilder.Entity<StoragePicket>()
-            .HasOne(wp => wp.Picket)
+            .HasOne(sp => sp.Picket)
             .WithMany(p => p.StoragePickets)
-            .HasForeignKey(wp => wp.PicketID);
+            .HasForeignKey(sp => sp.PicketID);
     }
+
 }
