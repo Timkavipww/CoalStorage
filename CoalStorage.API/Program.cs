@@ -24,8 +24,10 @@ app.addAuthentificaionNAuthorization();
 app.MapControllers();
 
 //END
+app.AddStorageEndpoints();
 app.AddCommonEndpoints();
 app.AddAuthEndpoints();
+app.AddAreaEndpoints();
 
 app.Run();
 

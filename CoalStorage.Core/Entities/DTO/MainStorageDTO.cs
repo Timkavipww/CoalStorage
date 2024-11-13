@@ -1,14 +1,8 @@
-﻿using CoalStorage.Core.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace CoalStorage.Core.Entities.DTO;
 
-namespace CoalStorage.Core.Entities.DTO
+public class MainStorageDTO
 {
-    public class MainStorageDTO : BaseEntity
-    {
-
-    }
+    public int Id { get; set; }
+    public List<PicketDTO> Pickets { get; set; } = new List<PicketDTO>();
+    public List<AreaDTO> Areas { get; set; } = new List<AreaDTO>();
 }
