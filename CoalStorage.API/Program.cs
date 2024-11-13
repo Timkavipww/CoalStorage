@@ -1,8 +1,7 @@
-using CoalStorage.API.Services;
-
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddInfrastructureServices(builder.Configuration);
+var configuration = builder.Configuration;
+builder.Services.AddInfrastructureServices(configuration);
 
 
 var app = builder.Build();
@@ -22,10 +21,11 @@ app.addSwagger();
 app.addAuthentificaionNAuthorization();
 
 
-
 app.MapControllers();
+
 //END
-app.MapGet("/", () => Results.Redirect("/swagger"));
+app.AddCommonEndpoints();
+app.AddAuthEndpoints();
 
 app.Run();
 
