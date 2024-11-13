@@ -1,26 +1,50 @@
-﻿using Ardalis.GuardClauses;
-using CoalStorage.Core.Interfaces;
-using CoalStorage.Infrastructure.Data;
-using CoalStorage.Infrastructure.Repositories;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-using Microsoft.OpenApi.Models;
-using NSwag;
-using NSwag.AspNetCore;
-
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace CoalStorage.Infrastructure;
 
 public static class DependencyInjection
 {
+
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
+        var secretKey = configuration["JwtSettings:SecretKey"];
+        var issuer = configuration["JwtSettings:Issuer"];
+        var audience = configuration["JwtSettings:Audience"];
         var connectionstring = configuration.GetConnectionString("DefaultConnection");
         Guard.Against.Null(connectionstring, message: "Connection string 'DefaultConnection' not found.");
 
         services.AddControllers();
-        services.AddAuthentication();
+
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+
+                // Загружаем параметры из конфигурации
+                var issuer = configuration["JwtSettings:Issuer"];
+                var audience = configuration["JwtSettings:Audience"];
+                var secretKey = configuration["JwtSettings:SecretKey"];
+
+                // Проверка на длину ключа
+                if (string.IsNullOrEmpty(secretKey) || secretKey.Length < 32)
+                {
+                    throw new ArgumentException("SecretKey must be at least 32 characters long.");
+                }
+
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = issuer,
+                    ValidAudience = audience,
+                    // Убедитесь, что длина ключа корректна
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+                };
+            });
+
+
         services.AddAuthorization();
 
         services.AddDbContext<AppDbContext>(options =>
@@ -36,7 +60,7 @@ public static class DependencyInjection
 
         services.AddSwaggerGen(options =>
         {
-                options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.ApiKey,
                     Name = "Authorization",
@@ -45,10 +69,10 @@ public static class DependencyInjection
                 });
 
 
-            options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {
-            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            new OpenApiSecurityScheme
             {
                 Reference = new OpenApiReference
                 {
@@ -56,7 +80,7 @@ public static class DependencyInjection
                     Id = "Bearer"
                 }
             },
-            Array.Empty<string>() // Для глобальной безопасности нет дополнительных параметров
+            Array.Empty<string>()
         }
     });
         });

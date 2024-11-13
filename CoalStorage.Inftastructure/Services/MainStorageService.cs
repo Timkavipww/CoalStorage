@@ -1,4 +1,4 @@
-﻿namespace CoalStorage.Core.Services;
+﻿namespace CoalStorage.Infrastructure.Services;
 
 public class MainStorageService
 {
