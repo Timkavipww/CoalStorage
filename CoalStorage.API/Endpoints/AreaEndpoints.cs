@@ -9,13 +9,13 @@ public static class AreaEndpoints
             .WithDescription("get area by storage id");
         app.MapPost("/api/storage/{id:int}/areas", AddAreaByStorageId);
     }
-    private static async Task<IResult> GetAllAreaByStorageId(int storageID, int areaID, IAreaRepository _context)
+    private static async Task<IResult> GetAllAreaByStorageId(IAreaRepository _context)
     {
         var response = new APIResponse();
         try
         {
             
-            var areas = await _context.GetAllAsync(storageID);
+            var areas = await _context.GetAllAsync();
             if (areas.Any())
             {
                 response.Success(areas);
@@ -34,14 +34,14 @@ public static class AreaEndpoints
         
         return Results.BadRequest(response);
     }
-    private static async Task<IResult> AddAreaByStorageId(int storageId, [FromBody] AreaDTO areaDTO, IAreaRepository _context)
+    private static async Task<IResult> AddAreaByStorageId([FromBody] AreaDTO areaDTO, IAreaRepository _context)
     {
         var response = new APIResponse();
 
         var area = areaDTO.toEntity();
         try
         {
-            await _context.AddAsync(storageId, area);
+            await _context.AddAsync(area);
             await _context.SaveChangesAsync();
             return Results.Ok(response);
         }
@@ -60,7 +60,7 @@ public static class AreaEndpoints
 
         try
         {
-            var area = await _context.GetByIdAsync(storaegeID, areaID);
+            var area = await _context.GetByIdAsync(areaID);
             return Results.Ok(response.Success(area));
         }
         catch (DbException dbEx)
@@ -72,13 +72,13 @@ public static class AreaEndpoints
             return Results.BadRequest(response.FatalException(ex));
         }
     }
-    private static async Task<IResult> RemoveAreaById(int storageId, [FromBody] AreaDTO areaDTO, IAreaRepository _context)
+    private static async Task<IResult> RemoveAreaById([FromBody] AreaDTO areaDTO, IAreaRepository _context)
     {
         var response = new APIResponse();
 
         try
         {
-            await _context.RemoveAsync(storageId, areaDTO.Id);
+            await _context.DeleteAsync(areaDTO.Id);
             await _context.SaveChangesAsync();
             return Results.Ok(response);
         }

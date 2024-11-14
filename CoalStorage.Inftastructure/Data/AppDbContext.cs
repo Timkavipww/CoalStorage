@@ -6,45 +6,55 @@ public class AppDbContext : DbContext
         : base(options)
     { }
 
-    public DbSet<MainStorage> Storages { get; set; }
+    public DbSet<MainStorage> MainStorages { get; set; }
     public DbSet<Picket> Pickets { get; set; }
     public DbSet<Area> Areas { get; set; }
-    public DbSet<PicketArea> PicketAreas { get; set; }
-    public DbSet<StoragePicket> StoragePickets { get; set; }
+    public DbSet<MainStorageCargo> MainStorageCargos { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Настройка связи между Area и MainStorage
+
+        modelBuilder.Entity<MainStorageCargo>()
+           .HasKey(wc => new { wc.MainStorageId, wc.AreaId, wc.PicketId });
+
+        // Связь "MainStorageCargo - MainStorage"
+        modelBuilder.Entity<MainStorageCargo>()
+            .HasOne(wc => wc.MainStorage)
+            .WithMany(ms => ms.MainStorageCargos)
+            .HasForeignKey(wc => wc.MainStorageId);
+
+        // Связь "MainStorageCargo - Area"
+        modelBuilder.Entity<MainStorageCargo>()
+            .HasOne(wc => wc.Area)
+            .WithMany(a => a.MainStorageCargos)
+            .HasForeignKey(wc => wc.AreaId);
+
+        // Связь "MainStorageCargo - Picket"
+        modelBuilder.Entity<MainStorageCargo>()
+            .HasOne(wc => wc.Picket)
+            .WithMany(p => p.MainStorageCargos)
+            .HasForeignKey(wc => wc.PicketId);
+
+        // Связь "Area - MainStorage"
         modelBuilder.Entity<Area>()
             .HasOne(a => a.MainStorage)
             .WithMany(ms => ms.Areas)
             .HasForeignKey(a => a.MainStorageId);
 
-        // Остальные настройки связей
-        modelBuilder.Entity<PicketArea>()
-            .HasKey(pa => new { pa.PicketID, pa.AreaID });
+        // Связь "Area - Picket"
+        modelBuilder.Entity<Picket>()
+            .HasOne(p => p.Area)
+            .WithMany(a => a.Pickets)
+            .HasForeignKey(p => p.AreaId);
 
-        modelBuilder.Entity<PicketArea>()
-            .HasOne(pa => pa.Picket)
-            .WithMany(p => p.PicketAreas)
-            .HasForeignKey(pa => pa.PicketID);
+        modelBuilder.Entity<MainStorage>()
+           .HasMany(ms => ms.Areas)
+           .WithOne(a => a.MainStorage)
+           .HasForeignKey(a => a.MainStorageId);
 
-        modelBuilder.Entity<PicketArea>()
-            .HasOne(pa => pa.Area)
-            .WithMany(a => a.PicketAreas)
-            .HasForeignKey(pa => pa.AreaID);
-
-        modelBuilder.Entity<StoragePicket>()
-            .HasKey(sp => new { sp.StorageID, sp.PicketID });
-
-        modelBuilder.Entity<StoragePicket>()
-            .HasOne(sp => sp.MainStorage)
-            .WithMany(ms => ms.StoragePickets)
-            .HasForeignKey(sp => sp.StorageID);
-
-        modelBuilder.Entity<StoragePicket>()
-            .HasOne(sp => sp.Picket)
-            .WithMany(p => p.StoragePickets)
-            .HasForeignKey(sp => sp.PicketID);
+        modelBuilder.Entity<MainStorage>()
+            .HasMany(ms => ms.Pickets)
+            .WithOne(p => p.MainStorage)
+            .HasForeignKey(p => p.MainStorageId);
     }
-
 }
+

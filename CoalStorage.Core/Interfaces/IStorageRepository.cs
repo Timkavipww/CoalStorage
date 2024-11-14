@@ -1,11 +1,7 @@
 ﻿namespace CoalStorage.Core.Interfaces;
 
-public interface IStorageRepository
+public interface IStorageRepository : IBaseRepository<MainStorage>
 {
-    Task<MainStorage> GetStorageByIdAsync(int id);
-    Task<IEnumerable<MainStorage>> GetAllStoragesAsync();
-    Task AddStorageAsync(MainStorage storage);
-    Task UpdateStorageAsync(MainStorage storage);
-    Task DeleteStorageAsync(int id);
-    Task SaveChangesAsync();
+    Task<MainStorage> GetStorageByIdAsync(long storageId);
+    Task<List<MainStorage>> GetAllStoragesAsync();
 }

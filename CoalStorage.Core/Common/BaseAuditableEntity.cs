@@ -1,12 +1,14 @@
-﻿namespace CoalStorage.Core.Common;
+﻿
+namespace CoalStorage.Core.Common;
 
-public abstract class BaseAuditableEntity : BaseEntity
+public class BaseAuditableEntity
 {
 #nullable enable
-    public DateTimeOffset Created { get; set; }
+
+    [JsonIgnore]
+    public DateTimeOffset Created { get; set; } = DateTimeOffset.UtcNow.DateTime;
 
     public string? CreatedBy { get; set; }
-
     public DateTimeOffset LastModified { get; set; }
 
     public string? LastModifiedBy { get; set; }

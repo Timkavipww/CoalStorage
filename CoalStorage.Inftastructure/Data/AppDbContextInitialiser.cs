@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-
-namespace CoalStorage.Infrastructure.Data;
+﻿namespace CoalStorage.Infrastructure.Data;
 
 public static class InitialiserExtensions
 {
@@ -28,16 +24,25 @@ public static class InitialiserExtensions
             _context = context;
         }
 
-        public async Task InitialiseAsync()
+    public async Task InitialiseAsync()
+    {
+        try
         {
-            try
+            if (_context.Database.GetPendingMigrations().Any())
             {
                 await _context.Database.MigrateAsync();
+                _logger.LogInformation("Migrations have been applied.");
             }
-            catch (Exception ex)
+            else
             {
-                _logger.LogError(ex, "An error occurred while initialising the database.");
-                throw;
+                _logger.LogInformation("No pending migrations found.");
             }
         }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while initialising the database.");
+            throw;
+        }
     }
+
+}

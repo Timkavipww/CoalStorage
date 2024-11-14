@@ -9,7 +9,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         _context = context;
     }
 
-    public async Task<T> GetByIdAsync(int id)
+    public async Task<T> GetByIdAsync(long id)
     {
         return await _context.Set<T>().FindAsync(id);
     }
@@ -31,7 +31,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(long id)
     {
         var entity = await _context.Set<T>().FindAsync(id);
         if (entity != null)

@@ -1,7 +1,4 @@
-﻿using System.Data.Common;
-using System.Net;
-
-namespace CoalStorage.Core.Common.Extensions;
+﻿namespace CoalStorage.Core.Common.Extensions;
 
 public static class APIResponseExtensions
 {

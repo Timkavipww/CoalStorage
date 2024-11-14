@@ -2,7 +2,8 @@
 
 public class MainStorageDTO
 {
-    public int Id { get; set; }
+    
+    public long Id { get; set; }
     public List<PicketDTO> Pickets { get; set; } = new List<PicketDTO>();
     public List<AreaDTO> Areas { get; set; } = new List<AreaDTO>();
 }

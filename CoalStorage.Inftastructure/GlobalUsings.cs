@@ -1,8 +1,6 @@
 ﻿global using Ardalis.GuardClauses;
 global using CoalStorage.Core.Common;
-global using CoalStorage.Core.Common.Extensions;
 global using CoalStorage.Core.Entities;
-global using CoalStorage.Core.Entities.DTO;
 global using CoalStorage.Core.Interfaces;
 global using CoalStorage.Infrastructure.Data;
 global using CoalStorage.Infrastructure.Repositories;
@@ -17,3 +15,4 @@ global using Microsoft.OpenApi.Models;
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Security.Claims;
 global using System.Text;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;

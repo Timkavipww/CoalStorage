@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿namespace CoalStorage.API.Endpoints;
 
-namespace CoalStorage.API.Endpoints
+public static class CommonEndpoints
 {
-    public static class CommonEndpoints
+    public static void AddCommonEndpoints(this WebApplication app)
     {
-        public static void AddCommonEndpoints(this WebApplication app)
-        {
-            app.MapGet("/", () => Results.Redirect("/swagger"));
-        }
+        app.MapGet("/", () => Results.Redirect("/swagger"));
     }
 }
