@@ -2,8 +2,9 @@
 
 public class Picket : BaseEntity
 {
-    public int AreaId { get; set; }
-    public ICollection<StoragePicket> StoragePickets { get; set; } = new List<StoragePicket>();
-    public ICollection<PicketArea> PicketAreas { get; set; } = new List<PicketArea>();
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public long Id { get; set; }
+    public string PicketName { get; set; } // example "101"
 
 }
