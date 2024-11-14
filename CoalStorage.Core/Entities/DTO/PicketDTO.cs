@@ -2,6 +2,6 @@
 
 public class PicketDTO
 {
-    public int Id { get; set; }
-    public int AreaId { get; set; }
+    public long Id { get; set; }
+    public long AreaId { get; set; }
 }

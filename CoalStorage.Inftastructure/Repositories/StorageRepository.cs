@@ -1,53 +1,29 @@
-﻿using CoalStorage.Infrastructure.Data;
+﻿namespace CoalStorage.Infrastructure.Repositories;
 
-namespace CoalStorage.Infrastructure.Repositories;
-
-public class StorageRepository : IStorageRepository
+public class StorageRepository : BaseRepository<MainStorage>, IStorageRepository
 {
     private readonly AppDbContext _context;
 
-    public StorageRepository(AppDbContext context)
+    public StorageRepository(AppDbContext context) : base(context)
     {
         _context = context;
     }
 
-    public async Task<MainStorage> GetStorageByIdAsync(int id)
+    public async Task<MainStorage> GetStorageByIdAsync(long storageId)
     {
-        return await _context.Storages
-            .Include(s => s.Pickets)
-            .Include(s => s.Areas)
-            .FirstOrDefaultAsync(s => s.Id == id);
+        return await _context.MainStorages
+            .Where(ms => ms.Id == storageId)
+            .Include(ms => ms.Areas)  // Чтобы подгрузить Areas вместе с MainStorage
+            .Include(ms => ms.Pickets)  // Подгружаем Pickets (если это необходимо)
+            .FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<MainStorage>> GetAllStoragesAsync()
+    // Метод для получения всех складов
+    public async Task<List<MainStorage>> GetAllStoragesAsync()
     {
-        return await _context.Storages
-            .Include(s => s.Pickets)
-            .Include(s => s.Areas)
+        return await _context.MainStorages
+            .Include(ms => ms.Areas)  // Загружаем Areas для всех складов
+            .Include(ms => ms.Pickets)  // Подгружаем Pickets (если это необходимо)
             .ToListAsync();
-    }
-
-    public async Task AddStorageAsync(MainStorage storage)
-    {
-        await _context.Storages.AddAsync(storage);
-    }
-
-    public async Task UpdateStorageAsync(MainStorage storage)
-    {
-        _context.Storages.Update(storage);
-    }
-
-    public async Task DeleteStorageAsync(int id)
-    {
-        var storage = await GetStorageByIdAsync(id);
-        if (storage != null)
-        {
-            _context.Storages.Remove(storage);
-        }
-    }
-
-    public async Task SaveChangesAsync()
-    {
-        await _context.SaveChangesAsync();
     }
 }

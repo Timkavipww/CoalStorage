@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-
-namespace CoalStorage.Infrastructure;
+﻿namespace CoalStorage.Infrastructure;
 
 public static class DependencyInjection
 {

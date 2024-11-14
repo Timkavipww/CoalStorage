@@ -1,10 +1,16 @@
 ﻿namespace CoalStorage.Core.Entities;
 
-public class Area : BaseEntity
+public class Area : BaseAuditableEntity
 {
-    public int MainStorageId { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public long Id { get; set; }
+    public string AreaName { get; set; } // Example "101-104"
+
+
+    public long MainStorageId { get; set; }  // ForeignKeywStorage
     public MainStorage MainStorage { get; set; }
-    public List<Picket> Pickets { get; set; } = new List<Picket>();
-    public ICollection<PicketArea> PicketAreas { get; set; } = new List<PicketArea>();
-    
+
+    public ICollection<MainStorageCargo> MainStorageCargos { get; set; } = new List<MainStorageCargo>();
+    public ICollection<Picket> Pickets { get; set; } = new List<Picket>();
 }

@@ -1,6 +1,4 @@
-﻿using CoalStorage.Core.Entities.DTO;
-
-namespace CoalStorage.Core.Common.Extensions;
+﻿namespace CoalStorage.Core.Common.Extensions;
 
 public static class PicketsExtension
 {

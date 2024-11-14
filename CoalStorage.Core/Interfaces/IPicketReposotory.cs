@@ -1,11 +1,7 @@
 ﻿namespace CoalStorage.Core.Interfaces;
 
-public interface IPicketRepository
+public interface IPicketRepository : IBaseRepository<Picket>
 {
-    Task<Picket> GetPicketByIdAsync(int id);
-    Task<IEnumerable<Picket>> GetAllPicketsAsync();
-    Task AddPicketAsync(Picket picket);
-    Task UpdatePicketAsync(Picket picket);
-    Task DeletePicketAsync(int id);
-    Task SaveChangesAsync();
+    Task<List<Picket>> GetPicketsByStorageIdAsync(long storageId);
+    Task<List<Picket>> GetPicketsByAreaIdAsync(long areaId);
 }

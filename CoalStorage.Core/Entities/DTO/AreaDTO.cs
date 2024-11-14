@@ -2,6 +2,6 @@
 
 public class AreaDTO
 {
-    public int Id { get; set; }
-    public int MainStorageId { get; set; }
+    public long Id { get; set; }
+    public long MainStorageId { get; set; }
 }
