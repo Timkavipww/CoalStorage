@@ -7,7 +7,7 @@ public static class StorageEndpoints
         app.MapGet("/api/storages", GetAllStorages).WithName("Get Storages").Produces<APIResponse>(200).Produces(400);
         app.MapGet("/api/storages/{id:int}", GetStorageById).WithName("Get Storage By Id").Produces<APIResponse>(200).Produces(404);
         app.MapPost("/api/storages", CreateStorage).WithName("Create Storage").Produces<APIResponse>(201).Produces(400);
-        app.MapPut("/api/storages", UpdateStorage).WithName("Update Storage").Produces<APIResponse>(201).Produces(400);
+        app.MapPut("/api/storages", UpdateStorageById).WithName("Update Storage").Produces<APIResponse>(201).Produces(400);
         app.MapDelete("api/storages", RemoveStorageById).WithName("Delete Storage").Produces<APIResponse>(200).Produces(400);
     }
 
@@ -97,13 +97,13 @@ public static class StorageEndpoints
                 return Results.NotFound(response);
 
             }
-                var storage = storageFromBody.toEntity();
+                var storage = storageFromBody.ToEntity();
 
-                await _context.AddAsync(storage);
+                await _context.CreateStorageAsync(storage);
 
                 await _context.SaveChangesAsync();
 
-                response.Created(storageFromBody.toEntity());
+                response.Created(storageFromBody.ToEntity());
 
                 return Results.Created();
         }
@@ -159,7 +159,7 @@ public static class StorageEndpoints
             storageExisting.LastModified = DateTimeOffset.UtcNow.Date;
             storageExisting.LastModifiedBy = "Admin";
 
-            await _context.UpdateAsync(storageExisting);
+            await _context.UpdateStorageAsync(storageExisting);
             await _context.SaveChangesAsync();
 
             response.Success(storageExisting);
