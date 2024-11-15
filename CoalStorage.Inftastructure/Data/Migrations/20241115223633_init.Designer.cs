@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CoalStorage.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241114032244_updatedDB")]
-    partial class updatedDB
+    [Migration("20241115223633_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -88,13 +88,13 @@ namespace CoalStorage.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("CoalStorage.Core.Entities.MainStorageCargo", b =>
                 {
-                    b.Property<long>("MainStorageId")
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<long>("AreaId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("PicketId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTimeOffset>("Created")
@@ -109,14 +109,22 @@ namespace CoalStorage.Infrastructure.Data.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
+                    b.Property<long>("MainStorageId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PicketId")
+                        .HasColumnType("bigint");
+
                     b.Property<double>("Weight")
                         .HasColumnType("double precision");
 
-                    b.HasKey("MainStorageId", "AreaId", "PicketId");
+                    b.HasKey("Id");
+
+                    b.HasAlternateKey("PicketId", "MainStorageId", "AreaId");
 
                     b.HasIndex("AreaId");
 
-                    b.HasIndex("PicketId");
+                    b.HasIndex("MainStorageId");
 
                     b.ToTable("MainStorageCargos");
                 });
@@ -144,11 +152,11 @@ namespace CoalStorage.Infrastructure.Data.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
+                    b.Property<double>("Load")
+                        .HasColumnType("double precision");
+
                     b.Property<long>("MainStorageId")
                         .HasColumnType("bigint");
-
-                    b.Property<string>("PicketName")
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -173,19 +181,19 @@ namespace CoalStorage.Infrastructure.Data.Migrations
             modelBuilder.Entity("CoalStorage.Core.Entities.MainStorageCargo", b =>
                 {
                     b.HasOne("CoalStorage.Core.Entities.Area", "Area")
-                        .WithMany("MainStorageCargos")
+                        .WithMany()
                         .HasForeignKey("AreaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CoalStorage.Core.Entities.MainStorage", "MainStorage")
-                        .WithMany("MainStorageCargos")
+                        .WithMany()
                         .HasForeignKey("MainStorageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CoalStorage.Core.Entities.Picket", "Picket")
-                        .WithMany("MainStorageCargos")
+                        .WithMany()
                         .HasForeignKey("PicketId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -218,8 +226,6 @@ namespace CoalStorage.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("CoalStorage.Core.Entities.Area", b =>
                 {
-                    b.Navigation("MainStorageCargos");
-
                     b.Navigation("Pickets");
                 });
 
@@ -227,14 +233,7 @@ namespace CoalStorage.Infrastructure.Data.Migrations
                 {
                     b.Navigation("Areas");
 
-                    b.Navigation("MainStorageCargos");
-
                     b.Navigation("Pickets");
-                });
-
-            modelBuilder.Entity("CoalStorage.Core.Entities.Picket", b =>
-                {
-                    b.Navigation("MainStorageCargos");
                 });
 #pragma warning restore 612, 618
         }

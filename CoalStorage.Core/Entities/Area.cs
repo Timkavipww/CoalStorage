@@ -2,18 +2,26 @@
 
 public class Area : BaseAuditableEntity
 {
+    /// <summary>
+    /// KEY
+    /// </summary>
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public  long Id { get; set; }
-    [JsonIgnore]
-    public string AreaRange { get; set; } // Example "101-104"
-    public long MainStorageId { get; set; }  // ForeignKeywStorage
+    public long Id { get; set; }
+
+    /// <summary>
+    /// FOREIGN KEY MAINSTORAGE
+    /// </summary>
+    [ForeignKey(nameof(MainStorage))]
+    public long MainStorageId { get; set; }
     public MainStorage MainStorage { get; set; }
-    [JsonIgnore]
-    public ICollection<MainStorageCargo> MainStorageCargos { get; set; } = new List<MainStorageCargo>();
-    [JsonIgnore]
+
+
     public ICollection<Picket> Pickets { get; set; } = new List<Picket>();
-    [JsonIgnore]
+
+    [NotMapped]
     public double TotalLoad => Pickets.Sum(p => p.Load);
-    
+
+    public string AreaName { get; set; }
+
 }

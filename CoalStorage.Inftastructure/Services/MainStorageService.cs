@@ -21,7 +21,7 @@ public class StorageService
     // Метод для добавления пикета в склад
     public async Task AddPicketToStorageAsync(long storageId, Picket picket)
     {
-        var storage = await _storageRepository.GetByIdAsync(storageId);
+        var storage = await _storageRepository.GetStorageByIdAsync(storageId);
         if (storage != null)
         {
             // Добавляем пикет в склад
@@ -33,7 +33,7 @@ public class StorageService
     // Метод для создания новой площади, связанной с несколькими пикетами
     public async Task CreateAreaForConnectedPicketsAsync(long storageId, List<long> picketIds)
     {
-        var storage = await _storageRepository.GetByIdAsync(storageId);
+        var storage = await _storageRepository.GetStorageByIdAsync(storageId);
         if (storage == null) return;
 
         // Создаём новую площадь
@@ -41,7 +41,7 @@ public class StorageService
 
         foreach (var picketId in picketIds)
         {
-            var picket = await _picketRepository.GetByIdAsync(picketId);
+            var picket = await _picketRepository.GetPicketByIdAsync(picketId);
             if (picket != null)
             {
                 // Добавляем пикет в площадь
@@ -71,10 +71,10 @@ public class StorageService
     // Метод для создания связи между складом и площадкой (например, если у вас есть необходимость связывать их отдельно)
     public async Task LinkAreaToStorageAsync(long storageId, long areaId)
     {
-        var storage = await _storageRepository.GetByIdAsync(storageId);
+        var storage = await _storageRepository.GetStorageByIdAsync(storageId);
         if (storage == null) return;
 
-        var area = await _areaRepository.GetByIdAsync(areaId);
+        var area = await _areaRepository.GetAreaByIdAsync(areaId);
         if (area != null && !storage.Areas.Contains(area))
         {
             storage.Areas.Add(area);
