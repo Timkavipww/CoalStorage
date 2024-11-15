@@ -1,7 +1,7 @@
 ﻿namespace CoalStorage.Core.Interfaces;
 
-public interface IStorageRepository : IBaseRepository<MainStorage>
+public interface IStorageRepository : IBaseRepository<MainStorageDTO>
 {
-    Task<MainStorage> GetStorageByIdAsync(long storageId);
-    Task<List<MainStorage>> GetAllStoragesAsync();
+    Task<MainStorageDTO> GetStorageByIdAsync(long storageId);
+    Task<List<MainStorageDTO>> GetAllStoragesAsync();
 }

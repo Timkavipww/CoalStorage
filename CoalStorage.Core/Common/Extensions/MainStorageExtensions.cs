@@ -5,7 +5,12 @@ public static class MainStorageExtensions
     public static MainStorage toEntity(this MainStorageDTO mainStorageDTO) => new MainStorage
     {
         Id = mainStorageDTO.Id,
-        Areas = mainStorageDTO.Areas.Select(areaDto => areaDto.toEntity()).ToList(),
-        Pickets = mainStorageDTO.Pickets.Select(picketsDto => picketsDto.toEntity()).ToList()
+        StorageName = mainStorageDTO.StorageName
     };
+    public static MainStorageDTO toDTO(this MainStorage mainStorage) => new MainStorageDTO
+    {
+        Id = mainStorage.Id,
+        StorageName = mainStorage.StorageName
+    };
+
 }

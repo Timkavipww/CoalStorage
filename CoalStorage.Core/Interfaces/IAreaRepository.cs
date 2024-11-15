@@ -1,7 +1,7 @@
 ﻿namespace CoalStorage.Core.Interfaces;
 
-public interface IAreaRepository : IBaseRepository<Area>
+public interface IAreaRepository : IBaseRepository<AreaDTO>
 {
-    Task<List<Area>> GetAreasByStorageIdAsync(long storageId);
-    Task<List<Area>> GetAreasByPicketIdAsync(long picketId);
+    Task<List<AreaDTO>> GetAreasByStorageIdAsync(long storageId);
+    Task<List<AreaDTO>> GetAreasByPicketIdAsync(long picketId);
 }

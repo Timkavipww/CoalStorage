@@ -1,4 +1,6 @@
-﻿namespace CoalStorage.Infrastructure.Services;
+﻿using CoalStorage.Core.Common.Extensions;
+
+namespace CoalStorage.Infrastructure.Services;
 
 public class StorageService
 {
@@ -23,7 +25,7 @@ public class StorageService
         if (storage != null)
         {
             // Добавляем пикет в склад
-            storage.Pickets.Add(picket);
+            storage.Pickets.Add(picket.toDTO());
             await _storageRepository.SaveChangesAsync();
         }
     }
@@ -43,25 +45,25 @@ public class StorageService
             if (picket != null)
             {
                 // Добавляем пикет в площадь
-                area.Pickets.Add(picket);
+                area.Pickets.Add(picket.toEntity());
             }
         }
 
         // Добавляем площадь к складу
-        storage.Areas.Add(area);
+        storage.Areas.Add(area.toDTO());
 
         // Сохраняем изменения в базе данных
         await _storageRepository.SaveChangesAsync();
     }
 
     // Метод для получения всех пикетов на складе
-    public async Task<List<Picket>> GetPicketsByStorageAsync(long storageId)
+    public async Task<List<PicketDTO>> GetPicketsByStorageAsync(long storageId)
     {
         return await _picketRepository.GetPicketsByStorageIdAsync(storageId);
     }
 
     // Метод для получения всех пикетов на площади
-    public async Task<List<Picket>> GetPicketsByAreaAsync(long areaId)
+    public async Task<List<PicketDTO>> GetPicketsByAreaAsync(long areaId)
     {
         return await _picketRepository.GetPicketsByAreaIdAsync(areaId);
     }

@@ -41,7 +41,7 @@ public static class AreaEndpoints
         var area = areaDTO.toEntity();
         try
         {
-            await _context.AddAsync(area);
+            await _context.AddAsync(area.toDTO());
             await _context.SaveChangesAsync();
             return Results.Ok(response);
         }

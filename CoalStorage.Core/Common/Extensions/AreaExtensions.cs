@@ -7,11 +7,13 @@ public static class AreaExtensions
     {
         Id = areaDTO.Id,
         MainStorageId = areaDTO.MainStorageId,
+        AreaRange = areaDTO.AreaName
         
     };
-    public static AreaDTO toAreaDTO(this Area area) => new AreaDTO
+    public static AreaDTO toDTO(this Area area) => new AreaDTO
     {
         Id = area.Id,
         MainStorageId = area.MainStorageId,
+        AreaName = area.AreaRange
     };
 }

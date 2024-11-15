@@ -3,5 +3,6 @@
 public class AreaDTO
 {
     public long Id { get; set; }
+    public string AreaName { get; set; }
     public long MainStorageId { get; set; }
 }
