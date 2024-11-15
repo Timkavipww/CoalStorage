@@ -41,7 +41,7 @@ public class AreaService
         foreach (var area in existingAreas)
         {
             // Пересечение с другой площадкой
-            if (IsOverlappingWith(area, new Area { Pickets = pickets }))
+            if (IsOverlappingWith(area, new Area { Pickets = pickets, Id = area.Id }))
             {
                 return false;
             }

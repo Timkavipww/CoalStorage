@@ -25,7 +25,7 @@ public class StorageService
         if (storage != null)
         {
             // Добавляем пикет в склад
-            storage.Pickets.Add(picket.toDTO());
+            storage.Pickets.Add(picket);
             await _storageRepository.SaveChangesAsync();
         }
     }
@@ -45,25 +45,25 @@ public class StorageService
             if (picket != null)
             {
                 // Добавляем пикет в площадь
-                area.Pickets.Add(picket.toEntity());
+                area.Pickets.Add(picket);
             }
         }
 
         // Добавляем площадь к складу
-        storage.Areas.Add(area.toDTO());
+        storage.Areas.Add(area);
 
         // Сохраняем изменения в базе данных
         await _storageRepository.SaveChangesAsync();
     }
 
     // Метод для получения всех пикетов на складе
-    public async Task<List<PicketDTO>> GetPicketsByStorageAsync(long storageId)
+    public async Task<List<Picket>> GetPicketsByStorageAsync(long storageId)
     {
         return await _picketRepository.GetPicketsByStorageIdAsync(storageId);
     }
 
     // Метод для получения всех пикетов на площади
-    public async Task<List<PicketDTO>> GetPicketsByAreaAsync(long areaId)
+    public async Task<List<Picket>> GetPicketsByAreaAsync(long areaId)
     {
         return await _picketRepository.GetPicketsByAreaIdAsync(areaId);
     }

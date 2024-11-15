@@ -14,6 +14,5 @@ public static class AreaExtensions
     {
         Id = area.Id,
         MainStorageId = area.MainStorageId,
-        AreaName = area.AreaRange
     };
 }

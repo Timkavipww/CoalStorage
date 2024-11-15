@@ -1,7 +1,7 @@
 ﻿namespace CoalStorage.Core.Interfaces;
 
-public interface IPicketRepository : IBaseRepository<PicketDTO>
+public interface IPicketRepository : IBaseRepository<Picket>
 {
-    Task<List<PicketDTO>> GetPicketsByStorageIdAsync(long storageId);
-    Task<List<PicketDTO>> GetPicketsByAreaIdAsync(long areaId);
+    Task<List<Picket>> GetPicketsByStorageIdAsync(long storageId);
+    Task<List<Picket>> GetPicketsByAreaIdAsync(long areaId);
 }

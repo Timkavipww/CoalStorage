@@ -3,7 +3,7 @@ using CoalStorage.Core.Common.Extensions;
 
 namespace CoalStorage.Infrastructure.Repositories;
 
-public class AreaRepository : BaseRepository<AreaDTO>, IAreaRepository
+public class AreaRepository : BaseRepository<Area>, IAreaRepository
 {
     private readonly AppDbContext _context;
 
@@ -12,20 +12,17 @@ public class AreaRepository : BaseRepository<AreaDTO>, IAreaRepository
         _context = context;
     }
 
-    public async Task<List<AreaDTO>> GetAreasByStorageIdAsync(long storageId)
+    public async Task<List<Area>> GetAreasByStorageIdAsync(long storageId)
     {
         return await _context.Areas
             .Where(a => a.MainStorageId == storageId)
-            .Select(u => u.toDTO())// Используем связь через MainStorageId
             .ToListAsync();
     }
 
-    // Метод для получения всех площадок, где находится пикет
-    public async Task<List<AreaDTO>> GetAreasByPicketIdAsync(long picketId)
+    public async Task<List<Area>> GetAreasByPicketIdAsync(long picketId)
     {
         return await _context.Areas
             .Where(a => a.Pickets.Any(p => p.Id == picketId))
-            .Select(u => u.toDTO())// Используем связь через Pickets
             .ToListAsync();
     }
 }

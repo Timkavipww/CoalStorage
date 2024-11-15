@@ -3,7 +3,7 @@ using CoalStorage.Core.Entities.DTO;
 
 namespace CoalStorage.Infrastructure.Repositories;
 
-public class StorageRepository : BaseRepository<MainStorageDTO>, IStorageRepository
+public class StorageRepository : BaseRepository<MainStorage>, IStorageRepository
 {
     private readonly AppDbContext _context;
 
@@ -12,24 +12,22 @@ public class StorageRepository : BaseRepository<MainStorageDTO>, IStorageReposit
         _context = context;
     }
 
-    public async Task<MainStorageDTO> GetStorageByIdAsync(long storageId)
+    public async Task<MainStorage> GetStorageByIdAsync(long storageId)
     {
         return await _context.MainStorages
             .Where(ms => ms.Id == storageId)
             .Include(ms => ms.Areas)  // Чтобы подгрузить Areas вместе с MainStorage
             .Include(ms => ms.Pickets)
-            .Select(ms => ms.toDTO())// Подгружаем Pickets (если это необходимо)
             .FirstOrDefaultAsync();
     }
 
     // Метод для получения всех складов
-    public async Task<List<MainStorageDTO>> GetAllStoragesAsync()
+    public async Task<List<MainStorage>> GetAllStoragesAsync()
     {
         return await _context.MainStorages
             .AsNoTracking()
             .Include(ms => ms.Areas)  // Загружаем Areas для всех складов
             .Include(ms => ms.Pickets)
-            .Select(ms => ms.toDTO())// Подгружаем Pickets (если это необходимо)
             .ToListAsync();
     }
 

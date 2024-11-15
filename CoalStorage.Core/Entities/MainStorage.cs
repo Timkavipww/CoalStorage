@@ -4,8 +4,8 @@ public class MainStorage : BaseAuditableEntity
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public long Id { get; set; }
-    public string StorageName { get; set; }
+    public required long Id { get; set; }
+    public required string StorageName { get; set; }
     [JsonIgnore]
     public ICollection<Area> Areas { get; set; } = new List<Area>();
     [JsonIgnore]
