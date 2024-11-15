@@ -7,7 +7,7 @@ public static class AuthEndpoints
         app.MapPost("/api/auth", (LoginModel model, [FromServices] ITokenService tokenService) => AuthUser(model, tokenService));
     }
 
-    private static async Task<IResult> AuthUser(LoginModel loginModel, ITokenService tokenService)
+    private static Task<IResult> AuthUser(LoginModel loginModel, ITokenService tokenService)
     {
         var response = new APIResponse();
         try
@@ -16,20 +16,20 @@ public static class AuthEndpoints
 
             if (token == null)
             {
-                return Results.Unauthorized();
+                return Task.FromResult(Results.Unauthorized());
             }
 
-            return Results.Ok(new { Token = token });
+            return Task.FromResult(Results.Ok(new { Token = token }));
         }
         catch (DbException dbEx)
         {
             response.DbException(dbEx);
-            return Results.BadRequest(response);
+            return Task.FromResult(Results.BadRequest(response));
         }
         catch (Exception ex)
         {
             response.FatalException(ex);
-            return Results.BadRequest(response);
+            return Task.FromResult(Results.BadRequest(response));
         }
     }
 }

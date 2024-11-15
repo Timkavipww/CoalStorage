@@ -1,13 +1,10 @@
-﻿
-using CoalStorage.Core.Common.Extensions;
+﻿namespace CoalStorage.Infrastructure.Repositories;
 
-namespace CoalStorage.Infrastructure.Repositories;
-
-public class AreaRepository : BaseRepository<Area>, IAreaRepository
+public class AreaRepository : IAreaRepository
 {
     private readonly AppDbContext _context;
 
-    public AreaRepository(AppDbContext context) : base(context)
+    public AreaRepository(AppDbContext context)
     {
         _context = context;
     }
@@ -19,10 +16,44 @@ public class AreaRepository : BaseRepository<Area>, IAreaRepository
             .ToListAsync();
     }
 
-    public async Task<List<Area>> GetAreasByPicketIdAsync(long picketId)
+    public async Task<Area> GetAreaByPicketIdAsync(long picketId)
     {
-        return await _context.Areas
-            .Where(a => a.Pickets.Any(p => p.Id == picketId))
-            .ToListAsync();
+        var picket = await _context.Pickets.FirstOrDefaultAsync(u => u.Id == picketId);
+        var area = picket?.Area;
+        return area;
+
+    }
+
+
+    public async Task<List<Area>> GetAllAreasAsync()
+    {
+        return await _context.Areas.AsNoTracking().Select(u => new Area
+        {
+            AreaName = u.AreaName,
+            Id = u.Id,
+            MainStorageId = u.MainStorageId,
+            Created = u.Created,
+            CreatedBy = u.CreatedBy,
+        }).ToListAsync();
+    }
+
+    public async Task<Area> GetAreaByIdAsync(long areaId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task RemoveAreaAsync(long areaId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task CreteAreaAsync(List<Picket> pickets)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
     }
 }

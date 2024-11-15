@@ -8,7 +8,7 @@
 
 <p>This component demonstrates showing data.</p>
 
-@if (MainStorage1.MainStorages1 == null)
+@* @if (MainStorage1.MainStorages1 == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -24,18 +24,18 @@ else
             </tr>
         </thead>
         <tbody>
-            @foreach (var storages in MainStorage1.MainStorages1)
+            @foreach (var storages in )
             {
                 <tr>
-                    <td>@storages.MainStorageId</td>
-                    <td>@storages.AreaName</td>
-                    <td>@storages.PicketName</td>
-                    <td>@storages.Weight</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
             }
         </tbody>
     </table>
-}
+} *@
 
 @code {
 
@@ -43,111 +43,12 @@ else
     {
 
         await Task.Delay(500);
-        // var request = new HttpRequestMessage
-        //     {
-        //         Method = HttpMethod.Get,
-        //         RequestUri = new Uri("uri"),
-        //         Headers =
-        //     {
-
-        //     }
-            // };
+    
 
     }
     
 
 
-    public class MainStorage1
-    {
-        public long MainStorageId { get; set; }
-
-        public long AreaId { get; set; }
-        private string area;
-
-
-        public long PicketId { get; set; }
-        public double Weight { get; set; }
-        public string PicketName => (MainStorageId * 100 + PicketId).ToString();
-        public string AreaName { get; private set; }
-
-    
-        public void InitializeAreaName()
-        {
-            AreaName = AreaToString(Convert.ToInt32(MainStorageId));
-        }
-
-        public static List<MainStorage1> MainStorages1 = new List<MainStorage1>()
-    {
-        new MainStorage1
-        {
-            AreaId = 1,
-            MainStorageId = 1,
-            PicketId = 6,
-            Weight = 100,
-
-        },new MainStorage1
-        {
-            AreaId = 2,
-            MainStorageId = 1,
-            PicketId = 5,
-            Weight = 12312,
-
-        },new MainStorage1
-        {
-            AreaId = 3,
-            MainStorageId = 1,
-            PicketId = 1,
-            Weight = 5345,
-
-        },new MainStorage1
-        {
-            AreaId = 3,
-            MainStorageId = 2,
-            PicketId = 2,
-            Weight = 6574,
-
-        },new MainStorage1
-        {
-            AreaId = 2,
-            MainStorageId = 2,
-            PicketId = 3,
-            Weight = 11,
-
-        },new MainStorage1
-        {
-            AreaId = 1,
-            MainStorageId = 2,
-            PicketId = 4,
-            Weight = 2222,
-
-        }
-    };
-
-    public static string AreaToString(int storageId)
-    {
-
-        var storages = MainStorages1?.Where(u => u.MainStorageId == storageId).ToList();
-        if (storages == null || storages.Count == 0)
-        {
-            return "N/A"; // Возвращаем значение по умолчанию, если данных нет
-        }
-        
-        var listAreasId = new List<int>();
-
-        foreach (var storage in storages)
-        {
-            listAreasId.Add(Convert.ToInt32(storage.AreaId));
-        }
-
-        var maxAreaId = listAreasId.Max();
-        var minAreaId = listAreasId.Min();
-
-        if (minAreaId == maxAreaId)
-            return minAreaId.ToString();
-
-        var listOfMaxNMinAreas = new List<string> { minAreaId.ToString(), maxAreaId.ToString() };
-        return string.Join("-", listOfMaxNMinAreas);
-    }
-    }
+   
 
 }
