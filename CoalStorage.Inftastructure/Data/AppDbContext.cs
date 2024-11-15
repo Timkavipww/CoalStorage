@@ -21,9 +21,10 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<MainStorage>()
        .Property(m => m.Created)
        .HasConversion(
-           v => v.ToUniversalTime(), // преобразуем в UTC при сохранении
+           v => v.ToUniversalTime(),
            v => v);
 
+     
     }
 }
 

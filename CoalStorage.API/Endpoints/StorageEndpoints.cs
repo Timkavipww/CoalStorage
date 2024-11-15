@@ -91,18 +91,19 @@ public static class StorageEndpoints
                 response.Message += "Empty body";
                 return Results.BadRequest(response);
             }
-            var storageEntity = storageFromBody.ToEntity();
-            storageEntity = new MainStorage
+            if (storageFromBody == null)
             {
-                StorageName = storageFromBody.StorageName,
-                Created = DateTime.Now,
-                CreatedBy = "Admin"
-            };
-            await _context.CreateStorageAsync(storageEntity);
-            await _context.SaveChangesAsync();
+                response.NotFound();
+                return Results.NotFound(response);
 
-            response.Success();
-            response.Created(storageEntity);
+            }
+                var storage = storageFromBody.toEntity();
+
+                await _context.AddAsync(storage);
+
+                await _context.SaveChangesAsync();
+
+                response.Created(storageFromBody.toEntity());
 
                 return Results.Created();
         }
@@ -146,53 +147,32 @@ public static class StorageEndpoints
             return Results.BadRequest(response.FatalException(ex));
         }
     }
-    private static async Task<IResult> UpdateStorage([FromQuery] long id, [FromBody] MainStorageCreateDTO storageFromBody, IStorageRepository _context)
+    private static async Task<IResult> UpdateStorageById([FromBody] MainStorageDTO storageFromBody, IStorageRepository _context)
     {
         var response = new APIResponse();
-
         try
         {
-            var existingStorage = await _context.GetStorageByIdAsync(id);
+            var storageExisting = await _context.GetStorageByIdAsync(storageFromBody.Id);
 
-            if (existingStorage == null)
-            {
-                existingStorage = new MainStorage
-                {
-                    StorageName = storageFromBody.StorageName,
-                    LastModified = DateTime.UtcNow,
-                    LastModifiedBy = "admin"
-                };
-                await _context.CreateStorageAsync(existingStorage);
-                await _context.SaveChangesAsync();
-                response.Created(existingStorage);
-                response.Result = $"Created new storage {existingStorage.StorageName}.";
-                return Results.Created();
-            }
-            else
-            {
+            storageExisting.Id = storageFromBody.Id;
+            storageExisting.StorageName = storageFromBody.StorageName;
+            storageExisting.LastModified = DateTimeOffset.UtcNow.Date;
+            storageExisting.LastModifiedBy = "Admin";
 
-                existingStorage.StorageName = storageFromBody.StorageName;
-                existingStorage.LastModified = DateTime.UtcNow; 
-                existingStorage.LastModifiedBy = "admin";  
-
-                await _context.UpdateStorageAsync(existingStorage);
-            }
+            await _context.UpdateAsync(storageExisting);
             await _context.SaveChangesAsync();
 
-            response.Success();
-            response.Result = $"Updated storage {existingStorage.StorageName}.";
-
+            response.Success(storageExisting);
             return Results.Ok(response);
+            
         }
         catch (DbException dbEx)
         {
-            response.ErrorMessages.Add($"Database error: {dbEx.Message}");
-            return Results.BadRequest(response);
+            return Results.BadRequest(response.DbException(dbEx));
         }
         catch (Exception ex)
         {
-            response.ErrorMessages.Add($"Unexpected error: {ex.Message}");
-            return Results.BadRequest(response);
+            return Results.BadRequest(response.FatalException(ex));
         }
     }
 }

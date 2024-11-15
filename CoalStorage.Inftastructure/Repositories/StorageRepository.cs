@@ -15,7 +15,7 @@ public class StorageRepository : IStorageRepository
             .AsNoTracking()
             .Include(storage => storage.Areas)
                 .ThenInclude(area => area.Pickets)
-                    .FirstOrDefaultAsync(u => u.Id == storageId);
+                    .FirstOrDefaultAsync();
             
     }
 
@@ -41,14 +41,4 @@ public class StorageRepository : IStorageRepository
         }
     }
 
-    public async Task CreateStorageAsync(MainStorage mainStorage)
-    {
-        await _context.AddAsync(mainStorage);
-    }
-    
-
-    public async Task UpdateStorageAsync(MainStorage mainStorage)
-    {
-        _context.Update(mainStorage);
-    }
 }

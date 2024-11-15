@@ -94,7 +94,11 @@ namespace CoalStorage.Infrastructure.Data.Migrations
                     b.Property<long>("AreaId")
                         .HasColumnType("bigint");
 
+<<<<<<< HEAD
                     b.Property<DateTime>("Created")
+=======
+                    b.Property<DateTimeOffset>("Created")
+>>>>>>> 1b68ea92c4ce3538ac7461be9ea1fc9988f24133
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
