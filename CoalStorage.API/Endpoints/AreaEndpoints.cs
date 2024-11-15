@@ -5,7 +5,7 @@ public static class AreaEndpoints
     public static void AddAreaEndpoints(this WebApplication app)
     {
         app.MapGet("/api/storage/{id:int}/areas", GetAllAreaByStorageId);
-        app.MapGet("/api/storage/{id:int}/areas/{areaId:int}", GetAreaByStorageId) // Изменено на areaId
+        app.MapGet("/api/storage/{id:int}/areas/{areaId:int}", GetAreaByStorageId)
             .WithDescription("get area by storage id");
         app.MapPost("/api/storage/{id:int}/areas", AddAreaByStorageId);
     }
@@ -41,7 +41,7 @@ public static class AreaEndpoints
         var area = areaDTO.toEntity();
         try
         {
-            await _context.AddAsync(area.toDTO());
+            await _context.AddAsync(area);
             await _context.SaveChangesAsync();
             return Results.Ok(response);
         }

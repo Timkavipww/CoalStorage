@@ -9,6 +9,7 @@ public static class PicketsExtension
     };
     public static PicketDTO toDTO(this Picket picket) => new PicketDTO
     {
+        MainStorageId = picket.MainStorageId,
         Id = picket.Id,
         AreaId = picket.AreaId,
     };

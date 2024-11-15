@@ -3,9 +3,10 @@
 public class MainStorageDTO
 {
     
-    public long Id { get; set; }
+    public required long Id { get; set; }
     public string StorageName { get; set; }
-
+    [JsonIgnore]
     public ICollection<AreaDTO> Areas { get; set; } = new List<AreaDTO>();
+    [JsonIgnore]
     public ICollection<PicketDTO> Pickets { get; set; } = new List<PicketDTO>();
 }
