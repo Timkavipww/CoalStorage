@@ -18,6 +18,12 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<MainStorageCargo>()
            .HasAlternateKey(u => new { u.PicketId, u.MainStorageId, u.AreaId });
 
+        modelBuilder.Entity<MainStorage>()
+       .Property(m => m.Created)
+       .HasConversion(
+           v => v.ToUniversalTime(),
+           v => v);
+
      
     }
 }

@@ -33,13 +33,13 @@ namespace CoalStorage.Infrastructure.Data.Migrations
                     b.Property<string>("AreaName")
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("LastModified")
+                    b.Property<DateTime>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
@@ -63,13 +63,13 @@ namespace CoalStorage.Infrastructure.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTimeOffset>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("LastModified")
+                    b.Property<DateTime>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
@@ -94,13 +94,17 @@ namespace CoalStorage.Infrastructure.Data.Migrations
                     b.Property<long>("AreaId")
                         .HasColumnType("bigint");
 
+<<<<<<< HEAD
+                    b.Property<DateTime>("Created")
+=======
                     b.Property<DateTimeOffset>("Created")
+>>>>>>> 1b68ea92c4ce3538ac7461be9ea1fc9988f24133
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("LastModified")
+                    b.Property<DateTime>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
@@ -137,13 +141,13 @@ namespace CoalStorage.Infrastructure.Data.Migrations
                     b.Property<long>("AreaId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTimeOffset>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("LastModified")
+                    b.Property<DateTime>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")

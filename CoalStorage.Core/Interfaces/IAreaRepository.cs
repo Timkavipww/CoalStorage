@@ -9,4 +9,8 @@ public interface IAreaRepository
     Task RemoveAreaAsync(long areaId);
     Task CreteAreaAsync(List<Picket> pickets);
     Task SaveChangesAsync();
+<<<<<<< HEAD
+
+=======
+>>>>>>> 1b68ea92c4ce3538ac7461be9ea1fc9988f24133
 }

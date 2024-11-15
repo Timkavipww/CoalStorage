@@ -15,17 +15,17 @@ public class StorageRepository : IStorageRepository
             .AsNoTracking()
             .Include(storage => storage.Areas)
                 .ThenInclude(area => area.Pickets)
-                    .FirstOrDefaultAsync();
+                    .FirstOrDefaultAsync(u => u.Id == storageId);
+
             
     }
 
-    // Метод для получения всех складов
     public async Task<List<MainStorage>> GetAllStoragesAsync()
     {
         return await _context.MainStorages
             .AsNoTracking()
             .Include(storage => storage.Areas)
-                .ThenInclude(area => area.Pickets)  // Загружаем пикеты для каждой области
+                .ThenInclude(area => area.Pickets) 
                     .ToListAsync();
     }
     public async Task SaveChangesAsync()
@@ -45,10 +45,12 @@ public class StorageRepository : IStorageRepository
     {
         await _context.AddAsync(mainStorage);
     }
-    
 
-    public Task UpdateStorageAsync(MainStorage mainStorage)
+
+
+    public async Task UpdateStorageAsync(MainStorage mainStorage)
     {
-        throw new NotImplementedException();
+        _context.Update(mainStorage);
+
     }
 }
