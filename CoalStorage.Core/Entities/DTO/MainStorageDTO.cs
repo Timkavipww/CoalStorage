@@ -4,6 +4,8 @@ public class MainStorageDTO
 {
     
     public long Id { get; set; }
-    public List<PicketDTO> Pickets { get; set; } = new List<PicketDTO>();
-    public List<AreaDTO> Areas { get; set; } = new List<AreaDTO>();
+    public string StorageName { get; set; }
+
+    public ICollection<AreaDTO> Areas { get; set; } = new List<AreaDTO>();
+    public ICollection<PicketDTO> Pickets { get; set; } = new List<PicketDTO>();
 }
