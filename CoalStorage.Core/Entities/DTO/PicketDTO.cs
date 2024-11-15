@@ -2,10 +2,9 @@
 
 public class PicketDTO
 {
-    public required long Id { get; set; }
-    public required long AreaId { get; set; }
-    public required long MainStorageId { get; set; }
-    [JsonIgnore]
-    public string PicketName => (MainStorageId * 100 + Id).ToString();
-
+    public long Id { get; set; }
+    public string PicketName => Convert.ToString(MainStorageId * 100 + Id);
+    public double Load { get; set; }
+    public long AreaId { get; set; }
+    public long MainStorageId { get; set; }
 }

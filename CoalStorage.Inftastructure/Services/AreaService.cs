@@ -53,7 +53,7 @@ public class AreaService
             Pickets = pickets
         };
         _logger.LogInformation("Новая площадка создана. Площадка разбита на следующие пикеты: {PicketsIds} в {Time}",
-        newArea.Id, DateTime.UtcNow);
+        newArea.Id, DateTime.Now);
 
         return true; 
     }

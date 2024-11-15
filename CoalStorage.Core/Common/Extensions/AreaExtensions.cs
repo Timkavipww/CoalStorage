@@ -1,18 +1,20 @@
-﻿using CoalStorage.Core.Entities.DTO;
+﻿using CoalStorage.Core.Entities;
+using CoalStorage.Core.Entities.DTO;
 namespace CoalStorage.Core.Common.Extensions;
 
 public static class AreaExtensions
 {
-    public static Area toEntity(this AreaDTO areaDTO) => new Area
+    public static Area ToEntity(this AreaDTO areaDTO) => new Area
     {
         Id = areaDTO.Id,
-        MainStorageId = areaDTO.MainStorageId,
-        AreaRange = areaDTO.AreaName
-        
+        AreaName = areaDTO.AreaName,
+        Pickets = areaDTO.Pickets.Select(p => p.ToEntity()).ToList()
     };
-    public static AreaDTO toDTO(this Area area) => new AreaDTO
+    public static AreaDTO ToDTO(this Area area) => new AreaDTO
     {
         Id = area.Id,
-        MainStorageId = area.MainStorageId,
+        AreaName = area.AreaName,
+        Pickets = area.Pickets.Select(p => p.ToDTO()).ToList(),
+        TotalLoad = area.TotalLoad
     };
 }

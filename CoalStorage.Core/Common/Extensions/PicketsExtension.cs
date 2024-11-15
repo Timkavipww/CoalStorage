@@ -2,15 +2,16 @@
 
 public static class PicketsExtension
 {
-    public static Picket toEntity(this PicketDTO picketDTO) => new Picket
+    public static PicketDTO ToDTO(this Picket picket) => new PicketDTO
     {
-        Id = picketDTO.Id,
-        AreaId = picketDTO.AreaId
-    };
-    public static PicketDTO toDTO(this Picket picket) => new PicketDTO
-    {
-        MainStorageId = picket.MainStorageId,
-        Id = picket.Id,
         AreaId = picket.AreaId,
+        Id = picket.Id,
+        Load = picket.Load,
+    };
+    public static Picket ToEntity(this PicketDTO picketDTO) => new Picket
+    {
+        AreaId = picketDTO.AreaId,
+        Id = picketDTO.Id,
+        Load = picketDTO.Load,
     };
 }

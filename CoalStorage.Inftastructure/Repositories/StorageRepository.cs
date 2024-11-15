@@ -1,13 +1,10 @@
-﻿using CoalStorage.Core.Common.Extensions;
-using CoalStorage.Core.Entities.DTO;
+﻿namespace CoalStorage.Infrastructure.Repositories;
 
-namespace CoalStorage.Infrastructure.Repositories;
-
-public class StorageRepository : BaseRepository<MainStorage>, IStorageRepository
+public class StorageRepository : IStorageRepository
 {
     private readonly AppDbContext _context;
 
-    public StorageRepository(AppDbContext context) : base(context)
+    public StorageRepository(AppDbContext context)
     {
         _context = context;
     }
@@ -15,10 +12,11 @@ public class StorageRepository : BaseRepository<MainStorage>, IStorageRepository
     public async Task<MainStorage> GetStorageByIdAsync(long storageId)
     {
         return await _context.MainStorages
-            .Where(ms => ms.Id == storageId)
-            .Include(ms => ms.Areas)  // Чтобы подгрузить Areas вместе с MainStorage
-            .Include(ms => ms.Pickets)
-            .FirstOrDefaultAsync();
+            .AsNoTracking()
+            .Include(storage => storage.Areas)
+                .ThenInclude(area => area.Pickets)
+                    .FirstOrDefaultAsync(u => u.Id == storageId);
+            
     }
 
     // Метод для получения всех складов
@@ -26,9 +24,31 @@ public class StorageRepository : BaseRepository<MainStorage>, IStorageRepository
     {
         return await _context.MainStorages
             .AsNoTracking()
-            .Include(ms => ms.Areas)  // Загружаем Areas для всех складов
-            .Include(ms => ms.Pickets)
-            .ToListAsync();
+            .Include(storage => storage.Areas)
+                .ThenInclude(area => area.Pickets)  // Загружаем пикеты для каждой области
+                    .ToListAsync();
+    }
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync();
     }
 
+    public async Task RemoveStorageAsync(MainStorage mainStorage)
+    {
+        if (mainStorage != null)
+        {
+        _context.Remove(mainStorage);
+        }
+    }
+
+    public async Task CreateStorageAsync(MainStorage mainStorage)
+    {
+        await _context.AddAsync(mainStorage);
+    }
+    
+
+    public async Task UpdateStorageAsync(MainStorage mainStorage)
+    {
+        _context.Update(mainStorage);
+    }
 }

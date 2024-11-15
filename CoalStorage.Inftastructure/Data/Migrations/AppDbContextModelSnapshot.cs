@@ -30,16 +30,16 @@ namespace CoalStorage.Infrastructure.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("AreaRange")
+                    b.Property<string>("AreaName")
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("LastModified")
+                    b.Property<DateTime>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
@@ -63,13 +63,13 @@ namespace CoalStorage.Infrastructure.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateTimeOffset>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("LastModified")
+                    b.Property<DateTime>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
@@ -85,35 +85,43 @@ namespace CoalStorage.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("CoalStorage.Core.Entities.MainStorageCargo", b =>
                 {
-                    b.Property<long>("MainStorageId")
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<long>("AreaId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("PicketId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTimeOffset>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("LastModified")
+                    b.Property<DateTime>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
+                    b.Property<long>("MainStorageId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PicketId")
+                        .HasColumnType("bigint");
+
                     b.Property<double>("Weight")
                         .HasColumnType("double precision");
 
-                    b.HasKey("MainStorageId", "AreaId", "PicketId");
+                    b.HasKey("Id");
+
+                    b.HasAlternateKey("PicketId", "MainStorageId", "AreaId");
 
                     b.HasIndex("AreaId");
 
-                    b.HasIndex("PicketId");
+                    b.HasIndex("MainStorageId");
 
                     b.ToTable("MainStorageCargos");
                 });
@@ -129,13 +137,13 @@ namespace CoalStorage.Infrastructure.Data.Migrations
                     b.Property<long>("AreaId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTimeOffset>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("CreatedBy")
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("LastModified")
+                    b.Property<DateTime>("LastModified")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("LastModifiedBy")
@@ -170,19 +178,19 @@ namespace CoalStorage.Infrastructure.Data.Migrations
             modelBuilder.Entity("CoalStorage.Core.Entities.MainStorageCargo", b =>
                 {
                     b.HasOne("CoalStorage.Core.Entities.Area", "Area")
-                        .WithMany("MainStorageCargos")
+                        .WithMany()
                         .HasForeignKey("AreaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CoalStorage.Core.Entities.MainStorage", "MainStorage")
-                        .WithMany("MainStorageCargos")
+                        .WithMany()
                         .HasForeignKey("MainStorageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CoalStorage.Core.Entities.Picket", "Picket")
-                        .WithMany("MainStorageCargos")
+                        .WithMany()
                         .HasForeignKey("PicketId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -215,8 +223,6 @@ namespace CoalStorage.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("CoalStorage.Core.Entities.Area", b =>
                 {
-                    b.Navigation("MainStorageCargos");
-
                     b.Navigation("Pickets");
                 });
 
@@ -224,14 +230,7 @@ namespace CoalStorage.Infrastructure.Data.Migrations
                 {
                     b.Navigation("Areas");
 
-                    b.Navigation("MainStorageCargos");
-
                     b.Navigation("Pickets");
-                });
-
-            modelBuilder.Entity("CoalStorage.Core.Entities.Picket", b =>
-                {
-                    b.Navigation("MainStorageCargos");
                 });
 #pragma warning restore 612, 618
         }

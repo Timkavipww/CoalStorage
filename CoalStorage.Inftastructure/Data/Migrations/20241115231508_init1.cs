@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CoalStorage.Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class updatedDB : Migration
+    public partial class init1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,9 +19,9 @@ namespace CoalStorage.Infrastructure.Data.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     StorageName = table.Column<string>(type: "text", nullable: true),
-                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    LastModified = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -35,11 +35,11 @@ namespace CoalStorage.Infrastructure.Data.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    AreaName = table.Column<string>(type: "text", nullable: true),
                     MainStorageId = table.Column<long>(type: "bigint", nullable: false),
-                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    AreaName = table.Column<string>(type: "text", nullable: true),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    LastModified = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -59,12 +59,12 @@ namespace CoalStorage.Infrastructure.Data.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    PicketName = table.Column<string>(type: "text", nullable: true),
+                    Load = table.Column<double>(type: "double precision", nullable: false),
                     AreaId = table.Column<long>(type: "bigint", nullable: false),
                     MainStorageId = table.Column<long>(type: "bigint", nullable: false),
-                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    LastModified = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -88,18 +88,21 @@ namespace CoalStorage.Infrastructure.Data.Migrations
                 name: "MainStorageCargos",
                 columns: table => new
                 {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Weight = table.Column<double>(type: "double precision", nullable: false),
                     MainStorageId = table.Column<long>(type: "bigint", nullable: false),
                     AreaId = table.Column<long>(type: "bigint", nullable: false),
                     PicketId = table.Column<long>(type: "bigint", nullable: false),
-                    Weight = table.Column<double>(type: "double precision", nullable: false),
-                    Created = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: true),
-                    LastModified = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastModified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MainStorageCargos", x => new { x.MainStorageId, x.AreaId, x.PicketId });
+                    table.PrimaryKey("PK_MainStorageCargos", x => x.Id);
+                    table.UniqueConstraint("AK_MainStorageCargos_PicketId_MainStorageId_AreaId", x => new { x.PicketId, x.MainStorageId, x.AreaId });
                     table.ForeignKey(
                         name: "FK_MainStorageCargos_Areas_AreaId",
                         column: x => x.AreaId,
@@ -131,9 +134,9 @@ namespace CoalStorage.Infrastructure.Data.Migrations
                 column: "AreaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MainStorageCargos_PicketId",
+                name: "IX_MainStorageCargos_MainStorageId",
                 table: "MainStorageCargos",
-                column: "PicketId");
+                column: "MainStorageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Pickets_AreaId",
@@ -144,8 +147,6 @@ namespace CoalStorage.Infrastructure.Data.Migrations
                 name: "IX_Pickets_MainStorageId",
                 table: "Pickets",
                 column: "MainStorageId");
-
-         
         }
 
         /// <inheritdoc />
