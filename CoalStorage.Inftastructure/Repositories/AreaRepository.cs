@@ -1,4 +1,6 @@
-﻿namespace CoalStorage.Infrastructure.Repositories;
+﻿using System.Runtime.InteropServices;
+
+namespace CoalStorage.Infrastructure.Repositories;
 
 public class AreaRepository : IAreaRepository
 {
@@ -19,8 +21,12 @@ public class AreaRepository : IAreaRepository
     public async Task<Area> GetAreaByPicketIdAsync(long picketId)
     {
         var picket = await _context.Pickets.FirstOrDefaultAsync(u => u.Id == picketId);
-        var area = picket?.Area;
-        return area;
+        var area = _context.AreaPickets.Select(u => new Area
+        {
+            
+        });
+
+        return (Area)area;
 
     }
 
@@ -39,16 +45,19 @@ public class AreaRepository : IAreaRepository
 
     public async Task<Area> GetAreaByIdAsync(long areaId)
     {
+        await Task.Delay(1000);
         throw new NotImplementedException();
     }
 
     public async Task RemoveAreaAsync(long areaId)
     {
+        await Task.Delay(1000);
         throw new NotImplementedException();
     }
 
     public async Task CreteAreaAsync(List<Picket> pickets)
     {
+        await Task.Delay(1000);
         throw new NotImplementedException();
     }
 

@@ -15,6 +15,7 @@ if(!app.Environment.IsDevelopment())
 //FIRST
 app.UseRouting();
 
+
 //SECONDARY
 app.addSwagger();
 

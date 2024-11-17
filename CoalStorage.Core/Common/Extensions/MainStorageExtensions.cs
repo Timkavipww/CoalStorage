@@ -2,12 +2,7 @@
 
 public static class MainStorageExtensions
 {
-    public static MainStorageDTO ToDTO(this MainStorage mainStorage) => new MainStorageDTO
-    {
-        Id = mainStorage.Id,
-        StorageName = mainStorage.StorageName,
-        Areas = mainStorage.Areas.Select(a => a.ToDTO()).ToList(),
-    };
+
     public static MainStorage ToEntity(this MainStorageDTO mainStorage) => new MainStorage
     {
         Id = mainStorage.Id,
@@ -19,4 +14,18 @@ public static class MainStorageExtensions
     {
        StorageName = mscDTO.StorageName,
     };
+
+    public static MainStorageDTO ToDTO(this MainStorage mainStorage)
+    {
+        if (mainStorage == null)
+            return null;
+
+        return new MainStorageDTO
+        {
+            Id = mainStorage.Id,
+            StorageName = mainStorage.StorageName,
+            Areas = mainStorage?.Areas?.Select(u => u.ToDTO()).ToList(),
+            Pickets = mainStorage?.Pickets?.Where(u => u.Id == mainStorage.Id).Select(u => u.ToDTO()).ToList(),
+        };
+    }
 }

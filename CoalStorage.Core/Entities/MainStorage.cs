@@ -1,14 +1,12 @@
 ﻿namespace CoalStorage.Core.Entities;
 
-public class MainStorage : BaseAuditableEntity
+public class MainStorage
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long Id { get; set; }
-
     public string StorageName { get; set; }
-    public ICollection<Area> Areas { get; set; } = new List<Area>();
-    [JsonIgnore]
-    public ICollection<Picket> Pickets { get; set; } = new List<Picket>();
+    public ICollection<Area> Areas { get; set; }
+    public List<Picket> Pickets { get; set; }
 
 }

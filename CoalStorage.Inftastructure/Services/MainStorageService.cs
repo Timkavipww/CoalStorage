@@ -42,10 +42,18 @@ public class StorageService
         foreach (var picketId in picketIds)
         {
             var picket = await _picketRepository.GetPicketByIdAsync(picketId);
+
+            var areaPicket = new AreaPicket
+            {
+                AreaId = area.Id, // Указываем Id площадки
+                PicketId = picket.Id, // Указываем Id пикета
+                Area = area, // Ссылаемся на объект площадки
+                Picket = picket // Ссылаемся на объект пикета
+            };
             if (picket != null)
             {
                 // Добавляем пикет в площадь
-                area.Pickets.Add(picket);
+                area.AreaPickets.Add(areaPicket);
             }
         }
 

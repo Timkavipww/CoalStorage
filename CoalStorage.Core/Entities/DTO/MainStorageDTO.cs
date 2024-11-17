@@ -5,4 +5,5 @@ public class MainStorageDTO
     public long Id { get; set; }
     public string StorageName { get; set; }
     public List<AreaDTO> Areas { get; set; }
+    public List<PicketDTO> Pickets { get; set; }
 }
