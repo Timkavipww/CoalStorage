@@ -11,13 +11,13 @@ public class StorageRepository : IStorageRepository
 
     public async Task<MainStorage> GetStorageByIdAsync(long storageId)
     {
-        return await _context.MainStorages
-            .AsNoTracking()
-            .Include(storage => storage.Areas)
-                .ThenInclude(area => area.Pickets)
-                    .FirstOrDefaultAsync(u => u.Id == storageId);
-
-            
+            return await _context.MainStorages
+                .AsNoTracking()
+                .Include(storage => storage.Areas)
+                    .ThenInclude(area => area.AreaPickets)
+                        .ThenInclude(ap => ap.Picket) // Подгружаем Picket
+                .AsSplitQuery()
+                .FirstOrDefaultAsync(u => u.Id == storageId);
     }
 
     public async Task<List<MainStorage>> GetAllStoragesAsync()
@@ -25,7 +25,7 @@ public class StorageRepository : IStorageRepository
         return await _context.MainStorages
             .AsNoTracking()
             .Include(storage => storage.Areas)
-                .ThenInclude(area => area.Pickets) 
+                .ThenInclude(area => area.AreaPickets)
                     .ToListAsync();
     }
     public async Task SaveChangesAsync()
@@ -35,6 +35,8 @@ public class StorageRepository : IStorageRepository
 
     public async Task RemoveStorageAsync(MainStorage mainStorage)
     {
+        await Task.Delay(1000);
+
         if (mainStorage != null)
         {
         _context.Remove(mainStorage);
@@ -50,6 +52,8 @@ public class StorageRepository : IStorageRepository
 
     public async Task UpdateStorageAsync(MainStorage mainStorage)
     {
+        await Task.Delay(1000);
+
         _context.Update(mainStorage);
 
     }

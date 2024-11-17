@@ -86,48 +86,7 @@ namespace CoalStorage.Infrastructure.Data.Migrations
                 b.ToTable("MainStorages");
             });
 
-            modelBuilder.Entity("CoalStorage.Core.Entities.MainStorageCargo", b =>
-            {
-                b.Property<long>("Id")
-                    .ValueGeneratedOnAdd()
-                    .HasColumnType("bigint");
-
-                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                b.Property<long>("AreaId")
-                    .HasColumnType("bigint");
-
-                b.Property<DateTimeOffset>("Created")
-                    .HasColumnType("timestamp with time zone");
-
-                b.Property<string>("CreatedBy")
-                    .HasColumnType("text");
-
-                b.Property<DateTimeOffset>("LastModified")
-                    .HasColumnType("timestamp with time zone");
-
-                b.Property<string>("LastModifiedBy")
-                    .HasColumnType("text");
-
-                b.Property<long>("MainStorageId")
-                    .HasColumnType("bigint");
-
-                b.Property<long>("PicketId")
-                    .HasColumnType("bigint");
-
-                b.Property<double>("Weight")
-                    .HasColumnType("double precision");
-
-                b.HasKey("Id");
-
-                b.HasAlternateKey("PicketId", "MainStorageId", "AreaId");
-
-                b.HasIndex("AreaId");
-
-                b.HasIndex("MainStorageId");
-
-                b.ToTable("MainStorageCargos");
-            });
+          
 
             modelBuilder.Entity("CoalStorage.Core.Entities.Picket", b =>
             {

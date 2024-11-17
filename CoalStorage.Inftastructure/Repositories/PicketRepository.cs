@@ -23,32 +23,42 @@ public class PicketRepository : IPicketRepository
     {
         return await _context.Pickets
             .AsNoTracking()
-            .Where(p => p.AreaId == areaId)
+            .Where(p => p.MainStorageId == areaId)
             .ToListAsync();
     }
 
     public async Task<List<Picket>> GetAllPicketsAsync()
     {
+        await Task.Delay(1000);
+
         throw new NotImplementedException();
     }
 
     public async Task<Picket> GetPicketByIdAsync(long picketId)
     {
+        await Task.Delay(1000);
+
         throw new NotImplementedException();
     }
 
     public async Task RemovePicketAsync(long PicketId)
     {
+        await Task.Delay(1000);
+
         throw new NotImplementedException();
     }
 
     public async Task CreatePicketAsync(Picket picket)
     {
+        await Task.Delay(1000);
+
         throw new NotImplementedException();
     }
 
     public async Task UpdatePicketAsync(Picket picket)
     {
+        await Task.Delay(1000);
+
         throw new NotImplementedException();
     }
 

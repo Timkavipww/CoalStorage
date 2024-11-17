@@ -1,20 +1,39 @@
-﻿using CoalStorage.Core.Entities;
-using CoalStorage.Core.Entities.DTO;
-namespace CoalStorage.Core.Common.Extensions;
+﻿    using CoalStorage.Core.Entities;
+    using CoalStorage.Core.Entities.DTO;
+    namespace CoalStorage.Core.Common.Extensions;
 
-public static class AreaExtensions
-{
-    public static Area ToEntity(this AreaDTO areaDTO) => new Area
+    public static class AreaExtensions
     {
-        Id = areaDTO.Id,
-        AreaName = areaDTO.AreaName,
-        Pickets = areaDTO.Pickets.Select(p => p.ToEntity()).ToList()
-    };
-    public static AreaDTO ToDTO(this Area area) => new AreaDTO
-    {
-        Id = area.Id,
-        AreaName = area.AreaName,
-        Pickets = area.Pickets.Select(p => p.ToDTO()).ToList(),
-        TotalLoad = area.TotalLoad
-    };
-}
+        public static Area ToEntity(this AreaDTO areaDTO) => new Area
+        {
+            Id = areaDTO.Id,
+            AreaName = areaDTO.AreaName,
+            MainStorageId = areaDTO.MainStorageId,
+        };
+
+
+        public static AreaDTO ToDTO(this Area area)
+        {
+            if (area == null)
+                return null;
+
+            var areaDTO = new AreaDTO
+            {
+                Id = area.Id,
+                AreaName = area.AreaName,
+                MainStorageId = area.MainStorageId,
+                Pickets = area.AreaPickets?
+                    .Where(ap => ap.Picket != null)
+                    .Select(ap => new PicketDTO
+                    {
+                        Id = ap.Picket.Id,
+                        AreaId = area.Id,
+                        MainStorageId = area.MainStorageId,
+                    })
+                    .ToList() ?? new List<PicketDTO>()
+            };
+
+            return areaDTO;
+
+        }
+    }

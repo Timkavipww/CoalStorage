@@ -1,4 +1,6 @@
-﻿namespace CoalStorage.API.Endpoints;
+﻿using System.Text.Json;
+
+namespace CoalStorage.API.Endpoints;
 
 public static class StorageEndpoints
 {
@@ -12,7 +14,7 @@ public static class StorageEndpoints
     }
 
     ///GET ALL STORAGES
-   private static async Task<IResult> GetAllStorages(IStorageRepository _context)
+    private static async Task<IResult> GetAllStorages(IStorageRepository _context)
     {
         var response = new APIResponse();
         try
@@ -28,21 +30,35 @@ public static class StorageEndpoints
                     Areas = storage.Areas.Select(area => new AreaDTO
                     {
                         Id = area.Id,
-                        AreaName = area.AreaName,
+                        AreaName = area.AreaName ?? "Unknown", // Можно указать значение по умолчанию
                         MainStorageId = area.MainStorageId,
-                        Pickets = area.Pickets.Select(picket => new PicketDTO
+                        TotalLoad = area.AreaPickets?
+                            .Where(ap => ap.Picket != null)
+                            .Sum(ap => ap.Picket.Load) ?? 0,
+                        Pickets = area.AreaPickets.Select(picket => new PicketDTO
                         {
                             Id = picket.Id,
-                            Load = picket.Load,
                             AreaId = area.Id,
                             MainStorageId = area.MainStorageId
                         }).ToList(),
-                        TotalLoad = area.TotalLoad
                     }).ToList()
+
                 }).ToList();
+
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve,
+                    WriteIndented = true // Опционально для улучшения читаемости
+                };
+
+                var json = JsonSerializer.Serialize(result, options);
 
                 response.Success(result);
                 return Results.Ok(response);
+            }
+            else
+            {
+                return Results.NotFound(response);
             }
         }
         catch (DbException dbEx)
@@ -53,8 +69,8 @@ public static class StorageEndpoints
         {
             return Results.BadRequest(response.FatalException(ex));
         }
-        return Results.NotFound(response);
     }
+
     /// GET STORAGE BY ID
     private static async Task<IResult> GetStorageById(long id, IStorageRepository _context)
     {
@@ -63,10 +79,22 @@ public static class StorageEndpoints
         {
             var storage = await _context.GetStorageByIdAsync(id);
 
+            
+
+
             if (storage != null)
             {
-                var result = storage.ToDTO();
-                response.Success(result);
+                var newStorage = storage.ToDTO();
+
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve,
+                    WriteIndented = true // Опционально для улучшения читаемости
+                };
+
+                var json = JsonSerializer.Serialize(newStorage, options);
+
+                response.Success(newStorage);
                 return Results.Ok(response);
             }
         }
@@ -156,8 +184,6 @@ public static class StorageEndpoints
 
             storageExisting.Id = storageFromBody.Id;
             storageExisting.StorageName = storageFromBody.StorageName;
-            storageExisting.LastModified = DateTimeOffset.UtcNow.Date;
-            storageExisting.LastModifiedBy = "Admin";
 
             await _context.UpdateStorageAsync(storageExisting);
             await _context.SaveChangesAsync();
