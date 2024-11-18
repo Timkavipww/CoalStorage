@@ -12,12 +12,12 @@ public class StorageRepository : IStorageRepository
     public async Task<MainStorage> GetStorageByIdAsync(long storageId)
     {
         return await _context.MainStorages
-            .AsNoTracking()
-            .Include(storage => storage.Areas)
-                .ThenInclude(area => area.AreaPickets)
-                    .ThenInclude(ap => ap.Picket) // Подгружаем Picket
-            .AsSplitQuery()
-            .FirstOrDefaultAsync(u => u.Id == storageId);
+    .AsNoTracking()
+    .Include(storage => storage.Areas)
+        .ThenInclude(area => area.AreaPickets)
+            .ThenInclude(ap => ap.Picket) // Подгружаем Picket
+    .AsSplitQuery()
+    .FirstOrDefaultAsync(u => u.Id == storageId);
     }
 
     public async Task<List<MainStorage>> GetAllStoragesAsync()

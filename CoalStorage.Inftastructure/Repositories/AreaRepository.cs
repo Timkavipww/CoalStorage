@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using CoalStorage.Core.Entities.DTO;
+using System.Runtime.InteropServices;
 
 namespace CoalStorage.Infrastructure.Repositories;
 
@@ -14,33 +15,26 @@ public class AreaRepository : IAreaRepository
     public async Task<List<Area>> GetAreasByStorageIdAsync(long storageId)
     {
         return await _context.Areas
+            .Include(a => a.AreaPickets)
+            .ThenInclude(ap => ap.Picket)
             .Where(a => a.MainStorageId == storageId)
             .ToListAsync();
     }
 
-    public async Task<Area> GetAreaByPicketIdAsync(long picketId)
-    {
-        var picket = await _context.Pickets.FirstOrDefaultAsync(u => u.Id == picketId);
-        var area = _context.AreaPickets.Select(u => new Area
-        {
-            
-        });
-
-        return (Area)area;
-
-    }
-
-
     public async Task<List<Area>> GetAllAreasAsync()
     {
-        return await _context.Areas.AsNoTracking().Select(u => new Area
-        {
-            AreaName = u.AreaName,
-            Id = u.Id,
-            MainStorageId = u.MainStorageId,
-            Created = u.Created,
-            CreatedBy = u.CreatedBy,
-        }).ToListAsync();
+        //return await _context.Areas.AsNoTracking()
+        //    .Select(u => new Area
+        //{
+        //    AreaName = u.AreaName,
+        //    Id = u.Id,
+        //    MainStorageId = u.MainStorageId,
+        //    Created = u.Created,
+        //    CreatedBy = u.CreatedBy,
+        //    LastModified = u.LastModified,
+        //    LastModifiedBy = u.LastModifiedBy,
+        //}).ToListAsync();
+        return await _context.Areas.AsNoTracking().ToListAsync();
     }
 
     public async Task<Area> GetAreaByIdAsync(long areaId)
@@ -55,10 +49,10 @@ public class AreaRepository : IAreaRepository
         throw new NotImplementedException();
     }
 
-    public async Task CreteAreaAsync(List<Picket> pickets)
+    public async Task CreteAreaAsync(Area area)
     {
-        await Task.Delay(1000);
-        throw new NotImplementedException();
+        
+        await _context.AddAsync(area);
     }
 
     public async Task SaveChangesAsync()

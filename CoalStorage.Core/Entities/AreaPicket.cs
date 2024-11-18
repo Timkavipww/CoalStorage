@@ -13,4 +13,6 @@ public class AreaPicket : BaseAuditableEntity
     [ForeignKey(nameof(Picket))]
     public long PicketId { get; set; }
     public Picket Picket { get; set; }
+    public double Load { get; set; }
+
 }
