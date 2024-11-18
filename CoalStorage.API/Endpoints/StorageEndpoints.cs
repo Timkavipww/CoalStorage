@@ -35,7 +35,7 @@ public static class StorageEndpoints
                         TotalLoad = area.AreaPickets?
                             .Where(ap => ap.Picket != null)
                             .Sum(ap => ap.Picket.Load) ?? 0,
-                        Pickets = area.AreaPickets.Select(picket => new PicketDTO
+                        Pickets = area.AreaPickets?.Select(picket => new PicketDTO
                         {
                             Id = picket.Id,
                             AreaId = area.Id,
@@ -108,6 +108,7 @@ public static class StorageEndpoints
         }
         return Results.NotFound(response);
     }
+
     /// CREATE STORAGE
     private static async Task<IResult> CreateStorage ([FromBody] MainStorageCreateDTO storageFromBody, IStorageRepository _context)
     {
@@ -119,19 +120,14 @@ public static class StorageEndpoints
                 response.Message += "Empty body";
                 return Results.BadRequest(response);
             }
-            if (storageFromBody == null)
-            {
-                response.NotFound();
-                return Results.NotFound(response);
 
-            }
                 var storage = storageFromBody.ToEntity();
 
                 await _context.CreateStorageAsync(storage);
 
                 await _context.SaveChangesAsync();
 
-                response.Created(storageFromBody.ToEntity());
+                response.Created(storage);
 
                 return Results.Created();
         }
@@ -144,6 +140,7 @@ public static class StorageEndpoints
             return Results.BadRequest(response.FatalException(ex));
         }
     }
+
     ///RemoveStorageById
     private static async Task<IResult> RemoveStorageById(long id, IStorageRepository _context)
     {
@@ -157,7 +154,7 @@ public static class StorageEndpoints
                 response.NotFound();
                 return Results.NotFound(response);
             }
-            await _context.RemoveStorageAsync(storage);
+            await _context.RemoveStorageAsync(id);
             await _context.SaveChangesAsync();
 
             response.Success(storage);
@@ -175,20 +172,21 @@ public static class StorageEndpoints
             return Results.BadRequest(response.FatalException(ex));
         }
     }
-    private static async Task<IResult> UpdateStorageById([FromBody] MainStorageDTO storageFromBody, IStorageRepository _context)
+
+    //UpdateStorageById
+    private static async Task<IResult> UpdateStorageById(long id, [FromBody] MainStorageCreateDTO storageFromBody, IStorageRepository _context)
     {
         var response = new APIResponse();
         try
         {
-            var storageExisting = await _context.GetStorageByIdAsync(storageFromBody.Id);
+            var storageExisting = await _context.GetStorageByIdAsync(id);
 
-            storageExisting.Id = storageFromBody.Id;
             storageExisting.StorageName = storageFromBody.StorageName;
 
             await _context.UpdateStorageAsync(storageExisting);
             await _context.SaveChangesAsync();
 
-            response.Success(storageExisting);
+            response.Success($"Storage w/Id {id} Updated w/ new Name {storageFromBody.StorageName}");
             return Results.Ok(response);
             
         }
