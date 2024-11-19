@@ -1,4 +1,5 @@
 ﻿using CoalStorage.Core.Entities;
+using System.Linq.Expressions;
 
 namespace CoalStorage.API.Endpoints;
 
@@ -11,6 +12,7 @@ public static class AreaEndpoints
         //app.MapPost("/api/storage/{id:int}/areas", AddAreaByStorageId);
         app.MapDelete("/api/areas/{areaId:int}", RemoveAreaById);
         app.MapPost("api/areas", CreateAreaToMainStorage);
+        app.MapPut("api/areas", UpdateAreaByStorageId);
     }
     private static async Task<IResult> GetAllAreaByStorageId(long storageId, IAreaRepository _context)
     {
@@ -104,6 +106,36 @@ public static class AreaEndpoints
             response.Created(areaDTO);
             return Results.Created();
 
+        }
+        catch (DbException dbEx)
+        {
+            return Results.BadRequest(response.DbException(dbEx));
+        }
+        catch (Exception ex)
+        {
+            return Results.BadRequest(response.FatalException(ex));
+        }
+    }
+
+    private static async Task<IResult> UpdateAreaByStorageId(long storageId, int areaId, [FromBody] AreaUpdateDTO areaFromBody, IAreaRepository _context)
+    {
+        var response = new APIResponse();
+        try
+        {
+            var existingAreas = await _context.GetAreasByStorageIdAsync(storageId);
+            var existArea = await _context.GetAreaByIdAsync(areaId);
+
+            if (existArea == null)
+            {
+                response.Result = "not found area";
+            return Results.NotFound(response);
+            }
+
+            existArea.MainStorageId = areaFromBody.MainStorageId;
+            await _context.UpdateAreaAsync(existArea);
+            await _context.SaveChangesAsync();
+
+            return Results.Ok();
         }
         catch (DbException dbEx)
         {

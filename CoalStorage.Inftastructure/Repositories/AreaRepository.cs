@@ -39,14 +39,16 @@ public class AreaRepository : IAreaRepository
 
     public async Task<Area> GetAreaByIdAsync(long areaId)
     {
-        await Task.Delay(1000);
-        throw new NotImplementedException();
+        return await _context.Areas
+            .Include(a => a.AreaPickets)
+            .FirstOrDefaultAsync(a => a.Id == areaId);
     }
 
     public async Task RemoveAreaAsync(long areaId)
     {
-        await Task.Delay(1000);
-        throw new NotImplementedException();
+        var area = await _context.Areas.FirstOrDefaultAsync(a => a.Id == areaId);
+
+        _context.Remove(area);
     }
 
     public async Task CreteAreaAsync(Area area)
@@ -58,5 +60,10 @@ public class AreaRepository : IAreaRepository
     public async Task SaveChangesAsync()
     {
         await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateAreaAsync(Area area)
+    {
+         _context.Update(area);
     }
 }
