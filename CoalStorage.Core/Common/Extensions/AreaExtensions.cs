@@ -36,4 +36,13 @@
             return areaDTO;
 
         }
+
+        public static Area toEntity(this AreaCreateDTO areaCreate) => new Area
+            {
+                AreaName = areaCreate.AreaName,
+                MainStorageId = areaCreate.MainStorageId,
+                Created = DateTime.UtcNow,
+                CreatedBy = "admin"
+                
+            };
     }

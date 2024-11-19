@@ -14,5 +14,8 @@ public class Picket : BaseAuditableEntity
     public MainStorage MainStorage { get; set; }
     public double Load {  get; set; }
 
+    public long AreaPicketId { get; set; }
+    public AreaPicket AreaPicket { get; set; }
+
 
 }

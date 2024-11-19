@@ -3,10 +3,10 @@
 public interface IAreaRepository
 {
     Task<List<Area>> GetAreasByStorageIdAsync(long storageId);
-    Task<Area> GetAreaByPicketIdAsync(long picketId);
     Task<List<Area>> GetAllAreasAsync();
     Task<Area> GetAreaByIdAsync(long areaId);
     Task RemoveAreaAsync(long areaId);
-    Task CreteAreaAsync(List<Picket> pickets);
+    Task UpdateAreaAsync(Area area);
+    Task CreteAreaAsync(Area area);
     Task SaveChangesAsync();
 }

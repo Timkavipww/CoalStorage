@@ -14,7 +14,8 @@ public class Area : BaseAuditableEntity
     public MainStorage MainStorage { get; set; }
     
     public ICollection<AreaPicket> AreaPickets { get; set; } = new List<AreaPicket>();
-    public double TotalLoad {  get; set; }
+    public double TotalLoad => AreaPickets?.Sum(ap => ap.Load) ?? 0;
+
 
 
 }

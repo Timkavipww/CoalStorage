@@ -1,4 +1,6 @@
-﻿namespace CoalStorage.Infrastructure;
+﻿using Microsoft.Extensions.Options;
+
+namespace CoalStorage.Infrastructure;
 
 public static class DependencyInjection
 {
@@ -46,8 +48,11 @@ public static class DependencyInjection
 
         services.AddAuthorization();
 
-        services.AddDbContext<AppDbContext>(options =>
-        options.UseNpgsql(connectionstring));
+        services.AddDbContext<AppDbContext>(options => {
+            options.UseNpgsql(connectionstring);
+            options.UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole())).EnableSensitiveDataLogging();
+        }
+        );
 
 
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));

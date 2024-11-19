@@ -32,9 +32,6 @@ public static class StorageEndpoints
                         Id = area.Id,
                         AreaName = area.AreaName ?? "Unknown", // Можно указать значение по умолчанию
                         MainStorageId = area.MainStorageId,
-                        TotalLoad = area.AreaPickets?
-                            .Where(ap => ap.Picket != null)
-                            .Sum(ap => ap.Picket.Load) ?? 0,
                         Pickets = area.AreaPickets?.Select(picket => new PicketDTO
                         {
                             Id = picket.Id,

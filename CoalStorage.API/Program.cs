@@ -28,7 +28,7 @@ app.MapControllers();
 app.AddStorageEndpoints();
 app.AddCommonEndpoints();
 //app.AddAuthEndpoints();
-//app.AddAreaEndpoints();
+app.AddAreaEndpoints();
 
 app.Run();
 
