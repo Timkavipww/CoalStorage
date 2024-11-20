@@ -69,7 +69,7 @@ public static class PicketEndpoints
             var storage = await storageRepository.GetStorageByIdAsync(storageId);
             if (storage != null)
             {
-                storage.Pickets.Add(picket);
+                storage.Pickets.Add(picket.ToEntity());
                 await storageRepository.SaveChangesAsync();
                 response.Success("Picket added successfully");
                 return Results.Ok(response);

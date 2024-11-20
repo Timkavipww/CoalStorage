@@ -4,15 +4,16 @@ public static class AreaEndpoints
 {
     public static void AddAreaEndpoints(this WebApplication app)
     {
-        app.MapGet("/api/storages/{storageId:int}/areas/{storageId:int}", GetAllAreaByStorageId);
-        app.MapGet("api/storages/{storageId:int}/areas", GetAllAreasByStorageId);
+        var storageRoutes = app.MapGroup("api/storages/{storageId}");
+        storageRoutes.MapGet("/areas/", GetAllAreasByStorageId);
+        storageRoutes.MapGet("/areas/{areaId:int}", GetAreaByStorageId);
         //app.MapPost("/api/storage/{id:int}/areas", AddAreaByStorageId);
-        app.MapDelete("/api/storages/{storageId:int}/areas/{areaId:int}", RemoveAreaByStorageId);
-        app.MapPost("api/storages/{storageId:int}/areas", CreateAreaByStorageId);
-        app.MapPut("api/storages/{storageId:int}/areas", UpdateAreaByStorageId);
+        storageRoutes.MapDelete("/areas/{areaId:int}", RemoveAreaByStorageId);
+        storageRoutes.MapPost("/areas", CreateAreaByStorageId);
+        storageRoutes.MapPut("/areas", UpdateAreaByStorageId);
     }
     //GET AREA BY STORAGE ID
-    private static async Task<IResult> GetAllAreaByStorageId(long storageId, IAreaRepository _context)
+    private static async Task<IResult> GetAreaByStorageId(long storageId, IAreaRepository _context)
     {
         var response = new APIResponse();
         try
