@@ -7,4 +7,6 @@ public class PicketDTO
     public string PicketName => Convert.ToString(MainStorageId * 100 + Id);
     public long AreaId { get; set; }
     public long MainStorageId { get; set; }
+    public double Load { get; set; }
+
 }

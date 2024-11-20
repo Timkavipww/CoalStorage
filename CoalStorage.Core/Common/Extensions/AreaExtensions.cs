@@ -5,7 +5,6 @@ public static class AreaExtensions
         public static Area ToEntity(this AreaDTO areaDTO) => new Area
         {
             Id = areaDTO.Id,
-            AreaName = areaDTO.AreaName,
             MainStorageId = areaDTO.MainStorageId,
         };
 
@@ -22,11 +21,12 @@ public static class AreaExtensions
                 MainStorageId = area.MainStorageId,
                 Pickets = area.AreaPickets?
                     .Where(ap => ap.Picket != null)
-                    .Select(ap => new PicketDTO
+                    .Select(p => new PicketDTO
                     {
-                        Id = ap.Picket.Id,
+                        Id = p.Picket.Id,
                         AreaId = area.Id,
                         MainStorageId = area.MainStorageId,
+                        Load = p.Load
                     })
                     .ToList() ?? new List<PicketDTO>()
             };
@@ -37,7 +37,6 @@ public static class AreaExtensions
 
         public static Area toEntity(this AreaCreateDTO areaCreate) => new Area
             {
-                AreaName = areaCreate.AreaName,
                 MainStorageId = areaCreate.MainStorageId,
                 Created = DateTime.UtcNow,
                 CreatedBy = "admin"

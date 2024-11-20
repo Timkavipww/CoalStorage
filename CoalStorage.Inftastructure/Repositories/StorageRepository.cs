@@ -23,10 +23,10 @@ public class StorageRepository : IStorageRepository
     public async Task<List<MainStorage>> GetAllStoragesAsync()
     {
         return await _context.MainStorages
-            .AsNoTracking()
             .Include(storage => storage.Areas)
-                .ThenInclude(area => area.AreaPickets)
-                    .ToListAsync();
+            .Include(storage => storage.Pickets)
+                .ThenInclude(storage => storage.AreaPicket)
+                    .ToListAsync() ?? new List<MainStorage>();
     }
     public async Task SaveChangesAsync()
     {
