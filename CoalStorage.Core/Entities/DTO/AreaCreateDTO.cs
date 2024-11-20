@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace CoalStorage.Core.Entities.DTO;
+﻿namespace CoalStorage.Core.Entities.DTO;
 
 public class AreaCreateDTO
 {

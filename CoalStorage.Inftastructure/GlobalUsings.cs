@@ -1,7 +1,7 @@
 ﻿global using Ardalis.GuardClauses;
 global using CoalStorage.Core.Common;
 global using CoalStorage.Core.Entities;
-global using CoalStorage.Core.Interfaces;
+global using CoalStorage.Application.Interfaces;
 global using CoalStorage.Infrastructure.Data;
 global using CoalStorage.Infrastructure.Repositories;
 global using CoalStorage.Infrastructure.Services;

@@ -1,7 +1,4 @@
-﻿using CoalStorage.Core.Entities.DTO;
-using System.Runtime.InteropServices;
-
-namespace CoalStorage.Infrastructure.Repositories;
+﻿namespace CoalStorage.Infrastructure.Repositories;
 
 public class AreaRepository : IAreaRepository
 {

@@ -1,8 +1,6 @@
-﻿    using CoalStorage.Core.Entities;
-    using CoalStorage.Core.Entities.DTO;
-    namespace CoalStorage.Core.Common.Extensions;
+﻿namespace CoalStorage.Core.Common.Extensions;
 
-    public static class AreaExtensions
+public static class AreaExtensions
     {
         public static Area ToEntity(this AreaDTO areaDTO) => new Area
         {

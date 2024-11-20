@@ -1,4 +1,4 @@
-﻿namespace CoalStorage.Core.Interfaces;
+﻿namespace CoalStorage.Application.Interfaces;
 
 public interface IBaseRepository<T> where T : class
 {

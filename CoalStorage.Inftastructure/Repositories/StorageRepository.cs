@@ -26,7 +26,7 @@ public class StorageRepository : IStorageRepository
             .AsNoTracking()
             .Include(storage => storage.Areas)
                 .ThenInclude(area => area.AreaPickets)
-                    .ToListAsync();
+                    .ToListAsync() ?? new List<MainStorage>();
     }
     public async Task SaveChangesAsync()
     {

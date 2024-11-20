@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-
+﻿
 namespace CoalStorage.API.Endpoints;
 
 public static class StorageEndpoints
