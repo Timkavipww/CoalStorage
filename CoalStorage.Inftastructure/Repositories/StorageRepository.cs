@@ -24,7 +24,7 @@ public class StorageRepository : IStorageRepository
     {
         return await _context.MainStorages
             .Include(storage => storage.Areas)
-            .ThenInclude(storage => storage.Pickets)
+              .ThenInclude(storage => storage.Pickets)
                     .ToListAsync() ?? new List<MainStorage>();
     }
     public async Task SaveChangesAsync()

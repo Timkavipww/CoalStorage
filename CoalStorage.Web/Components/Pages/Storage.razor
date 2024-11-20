@@ -9,7 +9,6 @@
             height: 100vh;
             background-color: #f9f9f9;
         }
-
         table {
             border-collapse: collapse;
             width: 80%;
@@ -19,12 +18,10 @@
             border-radius: 8px;
             overflow: hidden;
         }
-
         th, td {
             padding: 12px 20px;
             border: 1px solid #ddd;
         }
-
         th {
             background-color: #007bff;
             color: #fff;
@@ -35,6 +32,9 @@
             color: #333;
         }
 
+        td {
+            color: #333;
+        }
         tbody tr:nth-child(odd) {
             background-color: #f2f2f2;
         }
@@ -46,6 +46,7 @@
                 <th scope="col">Номер площадки</th>
                 <th scope="col">Номер Пикета</th>
                 <th scope="col">Груз на площадке (т)</th>
+                <th scope="col">Груз на площадке(т)</th>
             </tr>
         </thead>
         <tbody>
@@ -58,6 +59,13 @@
                         <td>@area.AreaName</td>
                         <td>@(string.Join(",", ConvertToRanges(area?.Pickets?.Select(p => p.PicketName))))</td>
                         <td>@(area.Pickets?.Sum(p => p.Load) ?? 0)</td>
+                if (storage != null)
+                {
+                    <tr>
+                        <td>@(storage.StorageName ?? "N/A")</td>
+                        <td>@(storage.Pickets?.Select(a => a.AreaPicket.Load).FirstOrDefault().ToString() ?? "N/A")</td>
+                        <td>@(storage.Areas?.FirstOrDefault()?.ToString() ?? "N/A")</td>
+                        <td>@(storage.Areas?.Select(a => a.MainStorageId == storage.Id).ToString())</td>
                     </tr>
                 }
             }
@@ -105,5 +113,7 @@
 
         ranges.Add(start == end ? $"{start}" : $"{start}-{end}");
         return ranges;
+
+        }
     }
 }

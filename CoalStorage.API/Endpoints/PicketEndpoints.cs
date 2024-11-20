@@ -81,6 +81,27 @@ public static class PicketEndpoints
         //{
         //    return Results.BadRequest(response.FatalException(ex));
         //}
+// 
+//         try
+//         {
+//             var storage = await storageRepository.GetStorageByIdAsync(storageId);
+//             if (storage != null)
+//             {
+//                 storage.Pickets.Add(picket.ToEntity());
+//                 await storageRepository.SaveChangesAsync();
+//                 response.Success("Picket added successfully");
+//                 return Results.Ok(response);
+//             }
+//         }
+//         catch (DbException dbEx)
+//         {
+//             return Results.BadRequest(response.DbException(dbEx));
+//         }
+//         catch (Exception ex)
+//         {
+//             return Results.BadRequest(response.FatalException(ex));
+//         }
+
 
         return Results.NotFound(response);
     }
