@@ -7,13 +7,14 @@ public static class AreaEndpoints
 {
     public static void AddAreaEndpoints(this WebApplication app)
     {
-        app.MapGet("/api/area/{storageId:int}", GetAllAreaByStorageId);
-        app.MapGet("api/areas", GetAllAreasAsync);
+        app.MapGet("/api/storages/{storageId:int}/areas/{storageId:int}", GetAllAreaByStorageId);
+        app.MapGet("api/storages/{storageId:int}/areas", GetAllAreasByStorageId);
         //app.MapPost("/api/storage/{id:int}/areas", AddAreaByStorageId);
-        app.MapDelete("/api/areas/{areaId:int}", RemoveAreaById);
-        app.MapPost("api/areas", CreateAreaToMainStorage);
-        app.MapPut("api/areas", UpdateAreaByStorageId);
+        app.MapDelete("/api/storages/{storageId:int}/areas/{areaId:int}", RemoveAreaByStorageId);
+        app.MapPost("api/storages/{storageId:int}/areas", CreateAreaByStorageId);
+        app.MapPut("api/storages/{storageId:int}/areas", UpdateAreaByStorageId);
     }
+    //GET AREA BY STORAGE ID
     private static async Task<IResult> GetAllAreaByStorageId(long storageId, IAreaRepository _context)
     {
         var response = new APIResponse();
@@ -40,7 +41,8 @@ public static class AreaEndpoints
         }
 
     }
-    private static async Task<IResult> GetAllAreasAsync(IAreaRepository _context)
+    //GET ALL AREAS BY STORAGE ID
+    private static async Task<IResult> GetAllAreasByStorageId(IAreaRepository _context)
     {
         var response = new APIResponse();
 
@@ -61,8 +63,8 @@ public static class AreaEndpoints
             return Results.BadRequest(response.FatalException(ex));
         }
     }
-
-    private static async Task<IResult> RemoveAreaById(long Id, IAreaRepository _context)
+    //REMOVE AREA BY STORAGE ID
+    private static async Task<IResult> RemoveAreaByStorageId(long Id, IAreaRepository _context)
     {
         var response = new APIResponse();
 
@@ -90,7 +92,8 @@ public static class AreaEndpoints
             return Results.BadRequest(response.FatalException(ex));
         }
     }
-    private static async Task<IResult> CreateAreaToMainStorage([FromBody] AreaCreateDTO areaFromBody, IAreaRepository _context)
+    //CREATE AREA BY STORAGE ID
+    private static async Task<IResult> CreateAreaByStorageId([FromBody] AreaCreateDTO areaFromBody, IAreaRepository _context)
     {
         var response = new APIResponse();
 
@@ -116,7 +119,7 @@ public static class AreaEndpoints
             return Results.BadRequest(response.FatalException(ex));
         }
     }
-
+    //UPDATE AREA BY STORAGE ID
     private static async Task<IResult> UpdateAreaByStorageId(long storageId, int areaId, [FromBody] AreaUpdateDTO areaFromBody, IAreaRepository _context)
     {
         var response = new APIResponse();
