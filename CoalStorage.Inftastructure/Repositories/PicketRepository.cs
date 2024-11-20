@@ -11,59 +11,44 @@ public class PicketRepository : IPicketRepository
         _context = context;
     }
 
-    public async Task<List<Picket>> GetPicketsByStorageIdAsync(long storageId)
+    public Task CreatePicketAsync(long storageId, long AreaId, Picket picket)
     {
-        return await _context.Pickets
+        throw new NotImplementedException();
+    }
+
+    public async Task<Picket> GetPicketByIdAsync(long storageId, long areaId, long picketId)
+    {
+        return await _context
+            .Areas
             .AsNoTracking()
-            .Where(p => p.MainStorageId == storageId)
-            .ToListAsync();
+            .Include(a => a.AreaPickets)
+                .ThenInclude(ap => ap.Picket)
+            .Where(a => a.MainStorageId == storageId && a.Id == areaId)
+            .SelectMany(a => a.AreaPickets)
+            .Where(ap => ap.PicketId == picketId)
+            .Select(ap => ap.Picket)
+            .FirstOrDefaultAsync();
+
+
     }
 
-    public async Task<List<Picket>> GetPicketsByAreaIdAsync(long areaId)
+    public Task<List<Picket>> GetPicketsByAreaIdAsync(long storageId, long areaId)
     {
-        return await _context.Pickets
-            .AsNoTracking()
-            .Where(p => p.MainStorageId == areaId)
-            .ToListAsync();
-    }
-
-    public async Task<List<Picket>> GetAllPicketsAsync()
-    {
-        await Task.Delay(1000);
-
         throw new NotImplementedException();
     }
 
-    public async Task<Picket> GetPicketByIdAsync(long picketId)
+    public Task RemovePicketAsync(long storageId, long AreaId, long picketId)
     {
-        await Task.Delay(1000);
-
         throw new NotImplementedException();
     }
 
-    public async Task RemovePicketAsync(long PicketId)
+    public Task SaveChangesAsync()
     {
-        await Task.Delay(1000);
-
         throw new NotImplementedException();
     }
 
-    public async Task CreatePicketAsync(Picket picket)
+    public Task UpdatePicketAsync(long storageId, long AreaId, Picket picket)
     {
-        await Task.Delay(1000);
-
         throw new NotImplementedException();
-    }
-
-    public async Task UpdatePicketAsync(Picket picket)
-    {
-        await Task.Delay(1000);
-
-        throw new NotImplementedException();
-    }
-
-    public async Task SaveChangesAsync()
-    {
-        await _context.SaveChangesAsync();
     }
 }
