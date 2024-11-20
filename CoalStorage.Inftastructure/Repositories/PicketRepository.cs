@@ -1,7 +1,4 @@
-﻿using CoalStorage.Core.Common.Extensions;
-using CoalStorage.Core.Entities.DTO;
-
-namespace CoalStorage.Infrastructure.Repositories;
+﻿namespace CoalStorage.Infrastructure.Repositories;
 
 public class PicketRepository : IPicketRepository
 {

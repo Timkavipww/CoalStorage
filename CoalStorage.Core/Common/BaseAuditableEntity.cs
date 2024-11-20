@@ -1,5 +1,4 @@
-﻿
-namespace CoalStorage.Core.Common;
+﻿namespace CoalStorage.Core.Common;
 
 public class BaseAuditableEntity
 {
