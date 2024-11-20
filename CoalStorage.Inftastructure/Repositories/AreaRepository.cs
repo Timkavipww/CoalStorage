@@ -12,8 +12,7 @@ public class AreaRepository : IAreaRepository
     public async Task<List<Area>> GetAreasByStorageIdAsync(long storageId)
     {
         return await _context.Areas
-            .Include(a => a.AreaPickets)
-            .ThenInclude(ap => ap.Picket)
+            .Include(a => a.Pickets)
             .Where(a => a.MainStorageId == storageId)
             .ToListAsync();
     }
@@ -37,7 +36,7 @@ public class AreaRepository : IAreaRepository
     public async Task<Area> GetAreaByIdAsync(long areaId)
     {
         return await _context.Areas
-            .Include(a => a.AreaPickets)
+            .Include(a => a.Pickets)
             .FirstOrDefaultAsync(a => a.Id == areaId);
     }
 

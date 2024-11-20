@@ -15,23 +15,20 @@ public class PicketRepository : IPicketRepository
 
     public async Task<Picket> GetPicketByIdAsync(long storageId, long areaId, long picketId)
     {
-        return await _context
-            .Areas
-            .AsNoTracking()
-            .Include(a => a.AreaPickets)
-                .ThenInclude(ap => ap.Picket)
-            .Where(a => a.MainStorageId == storageId && a.Id == areaId)
-            .SelectMany(a => a.AreaPickets)
-            .Where(ap => ap.PicketId == picketId)
-            .Select(ap => ap.Picket)
-            .FirstOrDefaultAsync();
+        
+        throw new NotImplementedException();
 
 
     }
 
-    public Task<List<Picket>> GetPicketsByAreaIdAsync(long storageId, long areaId)
+    public async Task<List<Picket>> GetPicketsByAreaIdAsync(long storageId, long areaId)
     {
-        throw new NotImplementedException();
+        return await _context
+            .Pickets
+            .AsNoTracking()
+            .Where(a => a.MainStorageId == storageId && a.AreaId == areaId)
+                .AsSplitQuery()
+                .ToListAsync();
     }
 
     public Task RemovePicketAsync(long storageId, long AreaId, long picketId)
