@@ -6,7 +6,9 @@ public static class PicketsExtension
     public static Picket ToEntity(this PicketDTO picketDTO) => new Picket
     {
         Id = picketDTO.Id,
-        MainStorageId = picketDTO.MainStorageId,
+        Area = picketDTO.Area,
+        AreaId = picketDTO.AreaId,
+        Load = picketDTO.Load,
     };
     public static PicketDTO ToDTO(this Picket picket)
     {
@@ -16,8 +18,9 @@ public static class PicketsExtension
         return new PicketDTO
         {
             Id = picket.Id,
-            MainStorageId = picket.MainStorageId,
-            AreaId = picket.MainStorageId, // Сформированное имя
+            Area = picket.Area,
+            AreaId = picket.AreaId,
+            Load = picket.Load,
         };
     }
 }

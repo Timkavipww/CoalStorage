@@ -1,4 +1,6 @@
 ﻿
+using CoalStorage.Core.Entities;
+
 namespace CoalStorage.API.Endpoints;
 
 public static class StorageEndpoints
@@ -22,24 +24,7 @@ public static class StorageEndpoints
 
             if (storages != null && storages.Any())
             {
-                var result = storages.Select(storage => new MainStorageDTO
-                {
-                    Id = storage.Id,
-                    StorageName = storage.StorageName,
-                    Areas = storage.Areas.Select(area => new AreaDTO
-                    {
-                        Id = area.Id,
-                        AreaName = area.AreaName ?? "Unknown", // Можно указать значение по умолчанию
-                        MainStorageId = area.MainStorageId,
-                        Pickets = area.AreaPickets?.Select(picket => new PicketDTO
-                        {
-                            Id = picket.Id,
-                            AreaId = area.Id,
-                            MainStorageId = area.MainStorageId
-                        }).ToList(),
-                    }).ToList()
-
-                }).ToList();
+                var result = storages.Select(s => s.ToDTO()).Take(1).ToList();
 
                 var options = new JsonSerializerOptions
                 {

@@ -27,6 +27,11 @@
             color: #fff;
             font-weight: bold;
         }
+
+        td {
+            color: #333;
+        }
+
         td {
             color: #333;
         }
@@ -40,12 +45,20 @@
                 <th scope="col">Номер склада</th>
                 <th scope="col">Номер площадки</th>
                 <th scope="col">Номер Пикета</th>
+                <th scope="col">Груз на площадке (т)</th>
                 <th scope="col">Груз на площадке(т)</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var storage in Storages ?? Enumerable.Empty<MainStorage>())
             {
+                foreach (var area in storage.Areas ?? Enumerable.Empty<Area>())
+                {
+                    <tr>
+                        <td>@storage.StorageName</td>
+                        <td>@area.AreaName</td>
+                        <td>@(string.Join(",", ConvertToRanges(area?.Pickets?.Select(p => p.PicketName))))</td>
+                        <td>@(area.Pickets?.Sum(p => p.Load) ?? 0)</td>
                 if (storage != null)
                 {
                     <tr>
@@ -73,6 +86,33 @@
         {
             Console.WriteLine($"Error loading storages: {ex.Message}");
             Storages = new List<MainStorage>();
+        }
+    }
+    private IEnumerable<string> ConvertToRanges(IEnumerable<long> numbers)
+    {
+
+        if (numbers == null || !numbers.Any())
+            return Enumerable.Empty<string>();
+
+        var sortedNumbers = numbers.OrderBy(n => n).ToList();
+        var ranges = new List<string>();
+        int start = (int)sortedNumbers[0], end = (int)sortedNumbers[0];
+
+        for (int i = 1; i < sortedNumbers.Count; i++)
+        {
+            if (sortedNumbers[i] == end + 1)
+            {
+                end = (int)sortedNumbers[i];
+            }
+            else
+            {
+                ranges.Add(start == end ? $"{start}" : $"{start}-{end}");
+                start = end = (int)sortedNumbers[i];
+            }
+        }
+
+        ranges.Add(start == end ? $"{start}" : $"{start}-{end}");
+        return ranges;
 
         }
     }

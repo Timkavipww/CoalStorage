@@ -7,6 +7,5 @@ public class MainStorage
     public long Id { get; set; }
     public string StorageName { get; set; }
     public ICollection<Area> Areas { get; set; }
-    public List<Picket> Pickets { get; set; }
 
 }
