@@ -1,0 +1,63 @@
+﻿@page "/counter"
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+<p>Current count: @currentCount</p>
+
+<button @onclick="IncrementCount">Click me</button>
+<button @onclick="LoadCounterAsync">Click me</button>
+
+
+@code {
+
+        private int currentCount = 0;
+
+        private void IncrementCount()
+        {
+            Console.WriteLine($"Button clicked! Current count: {++currentCount}");
+        StateHasChanged();
+        }
+    private int counter;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Выполняется при инициализации компонента
+        counter = await LoadCounterAsync();
+    }
+
+    private Task<int> LoadCounterAsync() => Task.FromResult(10);
+
+    [Parameter] public int CounterValue { get; set; }
+
+    private string message;
+
+    protected override Task OnParametersSetAsync()
+    {
+        message = $"Counter value is {CounterValue}";
+        return base.OnParametersSetAsync();
+    }
+    private bool isRendered;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Выполняется только при первой отрисовке
+            isRendered = true;
+            await Task.Delay(1000); // Задержка для демонстрации
+            StateHasChanged(); // Обновляет интерфейс вручную
+        }
+    }
+
+    private async Task IncrementCounter()
+    {
+        counter++;
+        await Task.Delay(500); // Имитация асинхронной работы
+        StateHasChanged(); // Принудительное обновление интерфейса
+    }
+}
+@code {
+    [Parameter] public EventCallback OnClick { get; set; }
+}
+
