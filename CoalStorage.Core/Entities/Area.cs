@@ -6,7 +6,6 @@ public class Area : BaseAuditableEntity
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long Id { get; set; }
 
-    [JsonIgnore]
     public string AreaName => Convert.ToString(MainStorageId * 100 + Id);
 
     /// <summary>
@@ -18,9 +17,9 @@ public class Area : BaseAuditableEntity
 
     //navigation property
     public ICollection<Picket> Pickets { get; set; } = new List<Picket>();
+    [JsonIgnore]
     
-    public double TotalLoad => Pickets?.Sum(a => a.Load) ?? 0;
-
+    public double TotalLoad => (Pickets?.Sum(u => u.Load) ?? 0);
 
 
 }

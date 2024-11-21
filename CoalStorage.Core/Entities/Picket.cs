@@ -6,19 +6,18 @@ public class Picket : BaseAuditableEntity
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public long Id { get; set; }
 
-    [JsonIgnore]
-    public long PicketName => Area.MainStorageId * 100 + Id;
-
-
-    public double Load {  get; set; }
 
     /// <summary>
     /// binding with Area
     /// </summary>
     public long AreaId { get; set; }
     public Area Area { get; set; } = null!;
+    public double Load {  get; set; }
 
-    public long MainStorageId => Area?.MainStorageId ?? 0; 
+    public long MainStorageId { get; set; }
+    [JsonIgnore]
+
+    public long PicketName => (int)((Area.MainStorageId * 100) + Id);
 
 
 }

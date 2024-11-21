@@ -1,4 +1,4 @@
-﻿namespace CoalStorage.Core.Entities;
+﻿namespace CoalStorage.Core.Entities.DTO;
 
 public class MainStorageCreateDTO
 {
