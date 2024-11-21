@@ -1,7 +1,4 @@
-﻿
-using CoalStorage.Core.Entities;
-
-namespace CoalStorage.API.Endpoints;
+﻿namespace CoalStorage.API.Endpoints;
 
 public static class StorageEndpoints
 {
