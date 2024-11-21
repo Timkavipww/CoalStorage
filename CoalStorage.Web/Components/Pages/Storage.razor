@@ -1,6 +1,8 @@
 ﻿@page "/"
 @inject IStorageRepository _context
-<main>
+
+<body>
+    <div>
     <table>
         <thead>
             <tr>
@@ -25,18 +27,50 @@
             }
         </tbody>
     </table>
-</main>
+        
+    </div>
+    <div>
+        <div>
+        <button class="btn-dark shadow-sm h-5 text-body=ADD m-2 w-auto" @onclick="() => AddStorageNEW(1)">
+            Добавить склад
+        </button>
+            <div class="top-row px-4">
+                <a href="/counter" target="_blank">About</a>
+            </div>
+        </div>
+
+        <button class="btn-dark  shadow-sm h-5 text-body=ADD w-auto ">
+            Добавить Площадку
+        </button>
+        <button class="btn-dark  shadow-sm h-5 text-body=ADD w-auto">
+            Добавить Пикет
+        </button>
+        <button class="btn-dark  shadow-sm h-5  text-body=ADD w-auto">
+            Объеденить пикеты
+        </button>
+    </div>
+</body>
 <link href="~/bootstrap/styles.css" rel="stylesheet" />
 
 
 @code {
+
+    private void AddStorageNEW(int num)
+    {
+        Console.WriteLine(string.Join("m", num));
+    }
+
+
     public List<MainStorage> Storages;
 
     protected override async Task OnInitializedAsync()
     {
+
         try
         {
+            
             Storages = await _context.GetAllStoragesAsync() ?? new List<MainStorage>();
+            Console.WriteLine("Storages загружены успешно.");
         }
         catch (Exception ex)
         {
@@ -44,6 +78,18 @@
             Storages = new List<MainStorage>();
         }
     }
+ 
+    private string checkedMessage = "Not changed yet";
+
+
+    private void CheckChanged() => checkedMessage = $"Last change {DateTime.Now}";
+
+    private void WriteToConsole()
+    {
+       Console.WriteLine("ALO");
+    }
+
+    
 
     private IEnumerable<string> ConvertToRanges(IEnumerable<long> numbers)
     {
