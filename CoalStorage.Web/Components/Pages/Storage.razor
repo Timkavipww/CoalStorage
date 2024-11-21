@@ -1,52 +1,13 @@
 ﻿@page "/"
 @inject IStorageRepository _context
 <main>
-    <style>
-        main {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f9f9f9;
-        }
-        table {
-            border-collapse: collapse;
-            width: 80%;
-            text-align: center;
-            background: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        th, td {
-            padding: 12px 20px;
-            border: 1px solid #ddd;
-        }
-        th {
-            background-color: #007bff;
-            color: #fff;
-            font-weight: bold;
-        }
-
-        td {
-            color: #333;
-        }
-
-        td {
-            color: #333;
-        }
-        tbody tr:nth-child(odd) {
-            background-color: #f2f2f2;
-        }
-    </style>
     <table>
         <thead>
             <tr>
                 <th scope="col">Номер склада</th>
                 <th scope="col">Номер площадки</th>
-                <th scope="col">Номер Пикета</th>
+                <th scope="col">Номера Пикетов</th>
                 <th scope="col">Груз на площадке (т)</th>
-                <th scope="col">Груз на площадке(т)</th>
             </tr>
         </thead>
         <tbody>
@@ -57,21 +18,16 @@
                     <tr>
                         <td>@storage.StorageName</td>
                         <td>@area.AreaName</td>
-                        <td>@(string.Join(",", ConvertToRanges(area?.Pickets?.Select(p => p.PicketName))))</td>
+                        <td>@(string.Join(",", ConvertToRanges(area.Pickets?.Select(p => p.PicketName) ?? Enumerable.Empty<long>())))</td>
                         <td>@(area.Pickets?.Sum(p => p.Load) ?? 0)</td>
-                if (storage != null)
-                {
-                    <tr>
-                        <td>@(storage.StorageName ?? "N/A")</td>
-                        <td>@(storage.Pickets?.Select(a => a.AreaPicket.Load).FirstOrDefault().ToString() ?? "N/A")</td>
-                        <td>@(storage.Areas?.FirstOrDefault()?.ToString() ?? "N/A")</td>
-                        <td>@(storage.Areas?.Select(a => a.MainStorageId == storage.Id).ToString())</td>
                     </tr>
                 }
             }
         </tbody>
     </table>
 </main>
+<link href="~/bootstrap/styles.css" rel="stylesheet" />
+
 
 @code {
     public List<MainStorage> Storages;
@@ -88,9 +44,9 @@
             Storages = new List<MainStorage>();
         }
     }
+
     private IEnumerable<string> ConvertToRanges(IEnumerable<long> numbers)
     {
-
         if (numbers == null || !numbers.Any())
             return Enumerable.Empty<string>();
 
@@ -113,7 +69,5 @@
 
         ranges.Add(start == end ? $"{start}" : $"{start}-{end}");
         return ranges;
-
-        }
     }
 }
